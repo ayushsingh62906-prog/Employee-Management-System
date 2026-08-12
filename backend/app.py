@@ -60,7 +60,7 @@ app = Flask(
 )
 
 # Flash messages aur session ke liye secret key
-app.secret_key = "my_secret_key"
+app.secret_key = os.getenv("SECRET_KEY", "my_secret_key")
 
 # ============================================================
 # Blueprints Register Karna
