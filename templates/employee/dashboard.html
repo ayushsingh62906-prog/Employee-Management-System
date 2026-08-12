@@ -1,0 +1,118 @@
+<!-- ==========================================================
+     FILE : templates/employee/dashboard.html
+     PURPOSE : Employee ka apna Dashboard
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}Employee Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stats Cards -->
+<div class="cards-container" style="margin-bottom: 30px;">
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Days Present (This Month)</h5>
+            <h2>{{ days_present }}</h2>
+        </div>
+        <i class="fas fa-calendar-check"></i>
+    </div>
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Pending Leaves</h5>
+            <h2>{{ pending_leaves }}</h2>
+        </div>
+        <i class="fas fa-plane-departure"></i>
+    </div>
+
+    <a href="{{ url_for('employee_payroll.list_payslips') }}" class="dashboard-card">
+    <div>
+        <h5>Latest Payslip</h5>
+        <h2>
+            {% if latest_payslip %}
+                ₹{{ "%.0f"|format(latest_payslip.net_salary) }}
+            {% else %}
+                --
+            {% endif %}
+        </h2>
+    </div>
+    <i class="fas fa-money-check-alt"></i>
+</a>
+
+</div>
+
+<!-- Quick Actions + Today's Status -->
+<div class="dashboard-row">
+
+    <!-- Quick Actions -->
+    <div class="chart-box">
+        <h4 style="margin-bottom: 20px;">Quick Actions</h4>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+
+            {% if today_record and today_record.check_in and not today_record.check_out %}
+                <form method="POST" action="{{ url_for('employee_attendance.check_out') }}" style="grid-column: span 2;">
+                    <button type="submit" class="btn-ems btn-ems-primary" style="justify-content: center; width: 100%;">
+                        <i class="fas fa-sign-out-alt"></i> Check Out
+                    </button>
+                </form>
+            {% elif not today_record or not today_record.check_in %}
+                <form method="POST" action="{{ url_for('employee_attendance.check_in') }}" style="grid-column: span 2;">
+                    <button type="submit" class="btn-ems btn-ems-primary" style="justify-content: center; width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i> Check In
+                    </button>
+                </form>
+            {% else %}
+                <div class="badge-ems badge-active" style="grid-column: span 2; text-align: center; padding: 12px;">
+                    <i class="fas fa-check-circle"></i> Today's attendance complete
+                </div>
+            {% endif %}
+
+            <a href="{{ url_for('employee_leave.leave_home') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+                <i class="fas fa-plane-departure"></i> Apply Leave
+            </a>
+
+            <a href="{{ url_for('employee_attendance.attendance_history') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+                <i class="fas fa-history"></i> Attendance History
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Today's Attendance Status -->
+    <div class="activity-box">
+        <h4 style="margin-bottom: 15px;">Today's Status</h4>
+
+        {% if today_record %}
+            <div class="info-list" style="grid-template-columns: 1fr;">
+
+                <div class="info-item">
+                    <span class="info-label">Check-In Time</span>
+                    <span class="info-value">{{ today_record.check_in or "--" }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Check-Out Time</span>
+                    <span class="info-value">{{ today_record.check_out or "--" }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="badge-ems badge-active">{{ today_record.status }}</span>
+                </div>
+
+            </div>
+        {% else %}
+            <p style="color: var(--text-secondary); text-align: center; padding: 30px 0;">
+                You haven't checked in today yet.
+            </p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

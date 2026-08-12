@@ -1,0 +1,91 @@
+<!-- ==========================================================
+     FILE : templates/employee/payroll/view.html
+     PURPOSE : Employee - Apna ek payslip detail mein dekhna
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}Payslip - {{ slip.month }}{% endblock %}
+{% block page_title %}My Payslip{% endblock %}
+
+{% block content %}
+
+<div class="page-card" id="payslip-content">
+
+    <div class="page-card-header">
+        <div>
+            <h4>Salary Slip - {{ slip.month }}</h4>
+            <p style="color:var(--text-secondary); margin-top:6px;">
+                {{ employee.full_name }} ({{ employee.employee_id }})
+            </p>
+        </div>
+
+        <!-- Print button - screen pe dikhega, print/PDF mein nahi -->
+        <div class="no-print" style="display:flex; gap:10px;">
+            <button onclick="window.print()" class="btn-ems btn-ems-primary">
+                <i class="fas fa-download"></i> Download / Print
+            </button>
+            <a href="{{ url_for('employee_payroll.list_payslips') }}" class="btn-ems btn-ems-outline">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <div class="info-list" style="margin-top:25px;">
+        <div class="info-item">
+            <span class="info-label">Employee ID</span>
+            <span class="info-value">{{ slip.employee_id }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Month</span>
+            <span class="info-value">{{ slip.month }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Monthly CTC</span>
+            <span class="info-value">₹ {{ "{:,.2f}".format(slip.monthly_ctc) }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Per Day Salary</span>
+            <span class="info-value">₹ {{ "{:,.2f}".format(slip.per_day_salary) }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Absent Days</span>
+            <span class="info-value">{{ slip.absent_days }} (₹ {{ "{:,.2f}".format(slip.absent_deduction) }})</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Half Days</span>
+            <span class="info-value">{{ slip.halfday_days }} (₹ {{ "{:,.2f}".format(slip.halfday_deduction) }})</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Unpaid Leave Days</span>
+            <span class="info-value">{{ slip.unpaid_leave_days }} (₹ {{ "{:,.2f}".format(slip.unpaid_deduction) }})</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Total Deduction</span>
+            <span class="info-value" style="color:#EF4444;">₹ {{ "{:,.2f}".format(slip.total_deduction) }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Net Salary</span>
+            <span class="info-value" style="color:#22C55E; font-size:20px; font-weight:700;">
+                ₹ {{ "{:,.2f}".format(slip.net_salary) }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Print-only CSS: jab print/PDF hoga, button aur sidebar/navbar hide ho jaayenge -->
+<style media="print">
+    .sidebar, .navbar, .footer, .no-print {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    .page-card {
+        box-shadow: none !important;
+        border: none !important;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base/base.html" %}
+
+{% block title %}Job Openings{% endblock %}
+{% block page_title %}Job Openings{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+    <div class="page-card-header">
+        <div>
+            <h4>Job Openings</h4>
+            <p style="color:var(--text-secondary); margin-top:6px;">Manage current job posts</p>
+        </div>
+        <a href="{{ url_for('jobs.add_job') }}" class="btn-ems btn-ems-primary">
+            <i class="fas fa-plus"></i> Post New Job
+        </a>
+        
+    </div>
+
+    <table class="ems-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Department</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td><strong>{{ job.title }}</strong></td>
+                <td>{{ job.department or "-" }}</td>
+                <td>{{ job.location or "-" }}</td>
+                <td>{{ job.job_type }}</td>
+                <td>
+                    <span class="badge-ems badge-active">{{ job.status }}</span>
+                </td>
+               <td>
+    <div class="action-icons">
+        <!-- View Applications -->
+        <a href="{{ url_for('jobs.view_applications', job_id=job._id) }}" class="icon-view" title="View Applications">
+            <i class="fas fa-users"></i>
+        </a>
+
+        <!-- Delete -->
+        <form action="{{ url_for('jobs.delete_job', job_id=job._id) }}" method="POST" style="display:inline;"
+              onsubmit="return confirm('Delete this job?')">
+            <button type="submit" class="icon-delete" title="Delete">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+    </div>
+</td>
+            </tr>
+            {% else %}
+            <tr class="empty-row">
+                <td colspan="6">
+                    <div class="empty-state">
+                        <i class="fas fa-briefcase"></i>
+                        No job openings yet.
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base/base.html" %}
+
+{% block title %}Edit Department{% endblock %}
+{% block page_title %}Edit Department{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+    <div class="page-card-header">
+        <div>
+            <h4>Edit Department</h4>
+            <p style="color:var(--text-secondary); margin-top:6px; font-size:14px;">
+                Update details for {{ department.name }} ({{ department.department_id }})
+            </p>
+        </div>
+    </div>
+
+    <form method="POST" class="form-grid" style="margin-top:10px;">
+
+        <div class="form-group">
+            <label>Department Name <span class="required">*</span></label>
+            <input type="text" name="name" value="{{ department.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Head of Department</label>
+            <input type="text" name="head" value="{{ department.head or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label>Location / Floor</label>
+            <input type="text" name="location" value="{{ department.location or '' }}">
+        </div>
+        <div class="form-group">
+    <label>Annual Budget (₹)</label>
+    <input type="number" name="budget" min="0" step="1000" value="{{ department.budget or 0 }}">
+</div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status">
+                <option value="Active" {% if department.status == "Active" %}selected{% endif %}>Active</option>
+                <option value="Inactive" {% if department.status == "Inactive" %}selected{% endif %}>Inactive</option>
+            </select>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Description</label>
+            <textarea name="description" rows="4">{{ department.description or '' }}</textarea>
+        </div>
+
+        <div class="form-actions full-width">
+            <button type="submit" class="btn-ems btn-ems-primary">
+                <i class="fas fa-save"></i> Update Department
+            </button>
+            <a href="{{ url_for('departments.view_department', department_id=department.department_id) }}" class="btn-ems btn-ems-outline">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+<!-- ==========================================================
+     FILE : navbar.html
+     PURPOSE : Common Navbar for Complete EMS
+=========================================================== -->
+
+<nav class="navbar expanded">
+
+    <!-- ==========================================
+         LEFT SECTION
+    =========================================== -->
+
+    <div class="navbar-left">
+
+        <!-- Sidebar Toggle Button -->
+
+        <button class="menu-toggle">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <!-- Page Title -->
+
+        <h4 class="page-title">
+
+            {% block page_title %}
+
+                Dashboard
+
+            {% endblock %}
+
+        </h4>
+
+    </div>
+
+
+    <!-- ==========================================
+         RIGHT SECTION
+    =========================================== -->
+
+    <div class="navbar-right">
+
+        <!-- Search Box -->
+
+        <div class="search-box">
+
+            <input type="text"
+                   placeholder="Search...">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </div>
+
+
+        <!-- Notification -->
+
+        <div class="notification">
+
+            <i class="fa-solid fa-bell"></i>
+
+        </div>
+
+
+        <!-- User Profile -->
+
+        <a href="{{ url_for('settings.update_profile') }}" class="profile" title="My Profile">
+
+    <img src="{{ url_for('static', filename='uploads/profile_photos/' ~ session.photo) if session.get('photo') else url_for('static', filename='images/user.png') }}"
+         onerror="this.src='https://ui-avatars.com/api/?name={{ session.username }}&background=6366F1&color=fff';"
+         alt="Profile">
+
+</a>
+
+    </div>
+
+</nav>

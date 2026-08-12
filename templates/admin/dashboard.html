@@ -1,0 +1,115 @@
+{% extends "base/base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+
+<!-- Stats Cards -->
+<div class="cards-container" style="margin-bottom: 30px;">
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Total Employees</h5>
+            <h2>{{ employee_count }}</h2>
+        </div>
+        <i class="fas fa-users"></i>
+    </div>
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Departments</h5>
+            <h2>{{ department_count }}</h2>
+        </div>
+        <i class="fas fa-building"></i>
+    </div>
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Today's Attendance</h5>
+            <h2>{{ attendance_count }}</h2>
+        </div>
+        <i class="fas fa-calendar-check"></i>
+    </div>
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Pending Leaves</h5>
+            <h2>{{ leave_count }}</h2>
+        </div>
+        <i class="fas fa-plane-departure"></i>
+    </div>
+
+</div>
+
+<!-- Quick Actions + Recent Activity -->
+<div class="dashboard-row">
+
+    <!-- Quick Actions -->
+    <div class="chart-box">
+        <h4 style="margin-bottom: 20px;">Quick Actions</h4>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+
+            <a href="{{ url_for('employees.add_employee') }}" class="btn-ems btn-ems-primary" style="justify-content: center;">
+                <i class="fas fa-user-plus"></i> Add Employee
+            </a>
+
+            <a href="{{ url_for('departments.add_department') }}" class="btn-ems btn-ems-primary" style="justify-content: center;">
+                <i class="fas fa-building"></i> Add Department
+            </a>
+
+            <a href="{{ url_for('employees.list_employees') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+                <i class="fas fa-users"></i> View Employees
+            </a>
+
+            <a href="{{ url_for('departments.list_departments') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+                <i class="fas fa-sitemap"></i> View Departments
+            </a>
+
+            <a href="{{ url_for('employees.list_employees', trash=1) }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+                <i class="fas fa-trash"></i> Employee Trash
+            </a>
+
+            <a href="#" class="btn-ems btn-ems-outline" style="justify-content: center; opacity: 0.6; cursor: not-allowed;">
+                <i class="fas fa-calendar-plus"></i> Mark Attendance
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-box">
+        <h4 style="margin-bottom: 15px;">Recent Activities</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Activity</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if recent_activities %}
+                    {% for act in recent_activities %}
+                    <tr>
+                        <td>{{ act.message }}</td>
+                        <td style="color: var(--text-secondary); font-size: 13px;">{{ act.time }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="2" style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                            No recent activities yet.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+{% endblock %}

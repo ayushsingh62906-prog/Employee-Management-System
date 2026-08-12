@@ -1,0 +1,115 @@
+{% extends "base/base.html" %}
+
+{% block title %}Leave Management{% endblock %}
+{% block page_title %}Leave Management{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+
+    <div class="page-card-header">
+        <div>
+            <h4>Leave Requests</h4>
+            <p style="color:var(--text-secondary); margin-top:6px; font-size:14px;">
+                Approve or reject employee leave requests.
+            </p>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <form method="GET" class="filter-bar">
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Pending" {% if status_filter == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if status_filter == "Approved" %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if status_filter == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
+
+        <select name="leave_type">
+            <option value="">All Leave Types</option>
+            {% for lt in leave_types %}
+                <option value="{{ lt }}" {% if leave_type_filter == lt %}selected{% endif %}>{{ lt }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-ems btn-ems-primary btn-ems-sm">
+            <i class="fas fa-filter"></i> Filter
+        </button>
+    </form>
+
+    <p style="margin-bottom:18px; color:var(--text-secondary);">
+        <strong>{{ requests_list|length }}</strong> request(s) found
+    </p>
+
+    <div style="overflow-x:auto;">
+        <table class="ems-table">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Leave Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests_list %}
+                <tr>
+                    <td>
+                        <strong>{{ req.full_name }}</strong><br>
+                        <small style="color:var(--text-secondary);">{{ req.employee_id }} • {{ req.department }}</small>
+                    </td>
+                    <td>{{ req.leave_type }}</td>
+                    <td>{{ req.from_date }}</td>
+                    <td>{{ req.to_date }}</td>
+                    <td>{{ req.total_days }}</td>
+                    <td>
+                        <span class="badge-ems 
+                            {% if req.status == 'Approved' %}badge-active
+                            {% elif req.status == 'Rejected' %}badge-inactive
+                            {% else %}badge-type{% endif %}">
+                            {{ req.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-icons">
+                            <a href="{{ url_for('leave.view_leave', request_id=req._id) }}" class="icon-view" title="View">
+                                <i class="fas fa-eye"></i>
+                            </a>
+
+                            {% if req.status == 'Pending' %}
+                                <!-- Approve -->
+                                <form action="{{ url_for('leave.approve_leave', request_id=req._id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="icon-restore" title="Approve" onclick="return confirm('Approve this leave?')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Reject (simple) -->
+                                <form action="{{ url_for('leave.reject_leave', request_id=req._id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="icon-delete" title="Reject" onclick="return confirm('Reject this leave?')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <i class="fas fa-plane-departure"></i>
+                            No leave requests found.
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base/base.html" %}
+
+{% block title %}Resignation{% endblock %}
+{% block page_title %}My Resignation{% endblock %}
+
+{% block content %}
+
+<!-- Apply Form -->
+<div class="page-card" style="margin-bottom:25px;">
+    <div class="page-card-header">
+        <div>
+            <h4>Submit Resignation</h4>
+            <p style="color:var(--text-secondary); margin-top:6px;">
+                {{ employee.full_name }} ({{ employee.employee_id }})
+            </p>
+        </div>
+    </div>
+
+    <form method="POST" class="form-grid">
+        <div class="form-group">
+            <label>Last Working Day <span class="required">*</span></label>
+            <input type="date" name="last_working_day" required>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Reason <span class="required">*</span></label>
+            <textarea name="reason" rows="4" required placeholder="Why are you resigning?"></textarea>
+        </div>
+
+        <div class="form-actions full-width">
+            <button type="submit" class="btn-ems btn-ems-primary"
+                    onclick="return confirm('Submit resignation request?');">
+                <i class="fas fa-paper-plane"></i> Submit Request
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- History -->
+<div class="page-card">
+    <div class="page-card-header">
+        <h4>My Resignation History</h4>
+    </div>
+
+    <table class="ems-table">
+        <thead>
+            <tr>
+                <th>Last Working Day</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Submitted On</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in my_requests %}
+            <tr>
+                <td>{{ req.last_working_day }}</td>
+                <td>{{ req.reason[:80] }}{% if req.reason|length > 80 %}...{% endif %}</td>
+                <td>
+                    <span class="badge-ems
+                        {% if req.status == 'Approved' %}badge-active
+                        {% elif req.status == 'Rejected' %}badge-inactive
+                        {% else %}badge-type{% endif %}">
+                        {{ req.status }}
+                    </span>
+                </td>
+                <td>{{ req.created_at.strftime('%d %b %Y') if req.created_at else "-" }}</td>
+            </tr>
+            {% else %}
+            <tr class="empty-row">
+                <td colspan="4">
+                    <div class="empty-state">No resignation requests yet.</div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

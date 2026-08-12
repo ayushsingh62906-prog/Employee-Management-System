@@ -1,0 +1,77 @@
+<!-- ==========================================================
+     FILE : templates/hr/dashboard.html
+     PURPOSE : HR ka Dashboard
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}HR Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stats Cards -->
+<div class="cards-container" style="margin-bottom: 30px;">
+
+    <a href="{{ url_for('jobs.list_jobs') }}" class="dashboard-card">
+        <div>
+            <h5>Open Job Postings</h5>
+            <h2>{{ open_jobs_count }}</h2>
+        </div>
+        <i class="fas fa-briefcase"></i>
+    </a>
+
+    <a href="{{ url_for('jobs.list_jobs') }}" class="dashboard-card">
+        <div>
+            <h5>New Applications</h5>
+            <h2>{{ new_applications_count }}</h2>
+        </div>
+        <i class="fas fa-file-alt"></i>
+    </a>
+
+    <a href="{{ url_for('exit.list_resignations') }}" class="dashboard-card">
+        <div>
+            <h5>Pending Resignations</h5>
+            <h2>{{ pending_resignations_count }}</h2>
+        </div>
+        <i class="fas fa-door-open"></i>
+    </a>
+
+    <div class="dashboard-card">
+        <div>
+            <h5>Total Employees</h5>
+            <h2>{{ total_employees_count }}</h2>
+        </div>
+        <i class="fas fa-users"></i>
+    </div>
+
+</div>
+
+<!-- Quick Actions -->
+<div class="page-card">
+    <div class="page-card-header">
+        <h4>Quick Actions</h4>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+
+        <a href="{{ url_for('jobs.add_job') }}" class="btn-ems btn-ems-primary" style="justify-content: center;">
+            <i class="fas fa-plus"></i> Post New Job
+        </a>
+
+        <a href="{{ url_for('jobs.list_jobs') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+            <i class="fas fa-list"></i> View All Jobs
+        </a>
+
+        <a href="{{ url_for('exit.list_resignations') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+            <i class="fas fa-door-open"></i> Review Resignations
+        </a>
+
+        <a href="{{ url_for('settings.update_profile') }}" class="btn-ems btn-ems-outline" style="justify-content: center;">
+            <i class="fas fa-user-cog"></i> My Profile
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

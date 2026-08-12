@@ -1,0 +1,312 @@
+{% extends "base/base.html" %}
+
+{% block title %}Applications - Screening{% endblock %}
+{% block page_title %}Resume Screening{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+
+    <div class="page-card-header">
+        <div>
+            <h4>Applications for: {{ job.title if job else "Job" }}</h4>
+            <p style="color:var(--text-secondary); margin-top:6px;">
+                {{ applications|length }} candidate(s) • Screen and shortlist candidates
+            </p>
+        </div>
+        <a href="{{ url_for('jobs.list_jobs') }}" class="btn-ems btn-ems-outline">
+            <i class="fas fa-arrow-left"></i> Back to Jobs
+        </a>
+    </div>
+
+    <!-- Filter -->
+    <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+        <span style="color:var(--text-secondary); font-size:14px; align-self:center;">Filter:</span>
+        <a href="?status=" class="btn-ems btn-ems-sm btn-ems-outline">All</a>
+        <a href="?status=Applied" class="btn-ems btn-ems-sm btn-ems-outline">Applied</a>
+        <a href="?status=Screening" class="btn-ems btn-ems-sm btn-ems-outline">Screening</a>
+        <a href="?status=Shortlisted" class="btn-ems btn-ems-sm btn-ems-outline">Shortlisted</a>
+        <a href="?status=Interview Scheduled" class="btn-ems btn-ems-sm btn-ems-outline">Interview Scheduled</a>
+        <a href="?status=Pending Onboarding" class="btn-ems btn-ems-sm btn-ems-outline">Pending Onboarding</a>
+        <a href="?status=Onboarded" class="btn-ems btn-ems-sm btn-ems-outline">Onboarded</a>
+        <a href="?status=Rejected" class="btn-ems btn-ems-sm btn-ems-outline">Rejected</a>
+    </div>
+
+    <div style="overflow-x:auto;">
+        <table class="ems-table">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Experience</th>
+                    <th>Resume</th>
+                    <th>Status</th>
+                    <th>Applied On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <!-- Candidate -->
+                    <td>
+                        <strong>{{ app.full_name }}</strong><br>
+                        <small style="color:var(--text-secondary);">{{ app.email }}</small><br>
+                        <small style="color:var(--text-secondary);">{{ app.phone or "-" }}</small>
+                    </td>
+
+                    <!-- Experience -->
+                    <td>{{ app.experience or "-" }}</td>
+
+                    <!-- Resume -->
+                    <td>
+                        {% if app.resume %}
+                            <a href="{{ url_for('static', filename='uploads/resumes/' + app.resume) }}"
+                               target="_blank" style="color:var(--primary);">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                        <span class="badge-ems
+                            {% if app.status in ['Shortlisted', 'Interview Scheduled', 'Selected', 'Onboarded'] %}badge-active
+                            {% elif app.status == 'Rejected' %}badge-inactive
+                            {% elif app.status == 'Pending Onboarding' %}badge-type
+                            {% else %}badge-type{% endif %}">
+                            {{ app.status }}
+                        </span>
+                        {% if app.screening_notes %}
+                            <br><small style="color:var(--text-muted);">{{ app.screening_notes[:40] }}...</small>
+                        {% endif %}
+                    </td>
+
+                    <!-- Applied On -->
+                    <td>{{ app.created_at.strftime('%d %b %Y') if app.created_at else "-" }}</td>
+
+                    <!-- Actions -->
+                    <td>
+                        <div style="display:flex; flex-direction:column; gap:6px; min-width:160px;">
+
+                            <!-- Screening -->
+                            {% if app.status == 'Applied' %}
+                            <form action="{{ url_for('jobs.update_application_status', app_id=app._id) }}" method="POST">
+                                <input type="hidden" name="status" value="Screening">
+                                <button type="submit" class="btn-ems btn-ems-sm btn-ems-outline" style="width:100%; justify-content:center;">
+                                    Screening
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <!-- Shortlist -->
+                            {% if app.status in ['Applied', 'Screening'] %}
+                            <form action="{{ url_for('jobs.update_application_status', app_id=app._id) }}" method="POST">
+                                <input type="hidden" name="status" value="Shortlisted">
+                                <button type="submit" class="btn-ems btn-ems-sm btn-ems-primary" style="width:100%; justify-content:center;">
+                                    <i class="fas fa-check"></i> Shortlist
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <!-- Reject -->
+                            {% if app.status not in ['Rejected', 'Onboarded'] %}
+                            <form action="{{ url_for('jobs.update_application_status', app_id=app._id) }}" method="POST"
+                                  onsubmit="return confirm('Reject this candidate?')">
+                                <input type="hidden" name="status" value="Rejected">
+                                <button type="submit" class="btn-ems btn-ems-sm btn-ems-danger" style="width:100%; justify-content:center;">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <!-- Interview Schedule -->
+                            {% if app.status in ['Shortlisted', 'Interview Scheduled'] %}
+                            <div style="margin-top:6px; padding:10px; background:var(--surface-hover); border-radius:8px; border:1px solid var(--border-color);">
+                                <small style="color:var(--text-secondary); display:block; margin-bottom:6px;">
+                                    <i class="fas fa-video"></i> Schedule Interview
+                                </small>
+                                <form action="{{ url_for('jobs.set_interview', app_id=app._id) }}" method="POST"
+                                      style="display:flex; flex-direction:column; gap:6px;">
+                                    <input type="url" name="interview_link"
+                                           placeholder="Meeting Link (Zoom/Meet)"
+                                           value="{{ app.interview_link or '' }}"
+                                           style="padding:6px 8px; border-radius:6px; border:1px solid var(--border-color); background:#0a0a0a; color:white; font-size:12px;">
+                                    <input type="date" name="interview_date"
+                                           value="{{ app.interview_date or '' }}"
+                                           style="padding:6px 8px; border-radius:6px; border:1px solid var(--border-color); background:#0a0a0a; color:white; font-size:12px;">
+                                    <input type="time" name="interview_time"
+                                           value="{{ app.interview_time or '' }}"
+                                           style="padding:6px 8px; border-radius:6px; border:1px solid var(--border-color); background:#0a0a0a; color:white; font-size:12px;">
+                                    <select name="interview_mode"
+                                            style="padding:6px 8px; border-radius:6px; border:1px solid var(--border-color); background:#0a0a0a; color:white; font-size:12px;">
+                                        <option value="Online" {% if app.interview_mode == 'Online' %}selected{% endif %}>Online</option>
+                                        <option value="Offline" {% if app.interview_mode == 'Offline' %}selected{% endif %}>Offline</option>
+                                    </select>
+                                    <button type="submit" class="btn-ems btn-ems-sm btn-ems-primary" style="justify-content:center;">
+                                        <i class="fas fa-calendar-check"></i> Save Interview
+                                    </button>
+                                </form>
+
+                                {% if app.interview_link or app.interview_date %}
+                                <div style="margin-top:8px; font-size:12px; color:var(--text-secondary);">
+                                    {% if app.interview_date %}
+                                        📅 {{ app.interview_date }} {{ app.interview_time or '' }}<br>
+                                    {% endif %}
+                                    {% if app.interview_link %}
+                                        🔗 <a href="{{ app.interview_link }}" target="_blank" style="color:var(--primary);">Join Link</a>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Online Assessment (Exam Link) -->
+                            {% if app.status in ['Shortlisted', 'Interview Scheduled'] %}
+                            <div style="margin-top:6px; padding:10px; background:var(--surface-hover); border-radius:8px; border:1px solid var(--border-color);">
+                                <small style="color:var(--text-secondary); display:block; margin-bottom:6px;">
+                                    <i class="fas fa-laptop-code"></i> Online Assessment
+                                </small>
+
+                                {% if app.exam_status == 'Completed' %}
+                                    <!-- Exam ho chuka hai - score dikhao -->
+                                    <div style="text-align:center;">
+                                        <strong style="
+                                            font-size:20px;
+                                            color: {% if app.exam_score and app.exam_score >= 50 %}#22C55E{% else %}#EF4444{% endif %};
+                                        ">
+                                            {{ app.exam_score }}%
+                                        </strong>
+                                        <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">
+                                            {{ app.exam_correct_count }} / {{ app.exam_total_questions }} correct
+                                        </div>
+                                    </div>
+                                {% elif app.exam_token %}
+                                    <!-- Link ban chuka hai, candidate ne abhi submit nahi kiya -->
+                                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">
+                                        Status: {{ app.exam_status }}
+                                    </div>
+                                    <div style="display:flex; gap:6px;">
+                                        <input type="text" readonly id="exam-link-{{ app._id }}"
+                                               value="{{ url_for('exam.take_exam', token=app.exam_token, _external=True) }}"
+                                               style="flex:1; padding:6px 8px; border-radius:6px; border:1px solid var(--border-color); background:#0a0a0a; color:white; font-size:11px;">
+                                        <button type="button" class="btn-ems btn-ems-sm btn-ems-outline"
+                                                onclick="navigator.clipboard.writeText(document.getElementById('exam-link-{{ app._id }}').value); this.innerText='Copied!'; setTimeout(()=>this.innerText='Copy', 1500);">
+                                            Copy
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <!-- Abhi tak koi link generate nahi hua -->
+                                    <form action="{{ url_for('exam.generate_exam_link', app_id=app._id) }}" method="POST">
+                                        <button type="submit" class="btn-ems btn-ems-sm btn-ems-primary" style="width:100%; justify-content:center;">
+                                            <i class="fas fa-link"></i> Generate Exam Link
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Document Upload & Verification -->
+                            {% if app.status == 'Selected' %}
+                            <div style="margin-top:6px; padding:10px; background:var(--surface-hover); border-radius:8px; border:1px solid var(--border-color);">
+                                <small style="color:var(--text-secondary); display:block; margin-bottom:8px;">
+                                    <i class="fas fa-folder-open"></i> Document Verification
+                                </small>
+
+                                {% if not app.doc_token %}
+                                    <!-- Abhi tak koi link generate nahi hua -->
+                                    <form action="{{ url_for('onboarding.generate_doc_link', app_id=app._id) }}" method="POST">
+                                        <button type="submit" class="btn-ems btn-ems-sm btn-ems-primary" style="width:100%; justify-content:center;">
+                                            <i class="fas fa-link"></i> Send Document Upload Link
+                                        </button>
+                                    </form>
+
+                                {% elif app.doc_status != 'Uploaded' %}
+                                    <!-- Link ban chuka hai, candidate ne abhi upload nahi kiya -->
+                                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px;">
+                                        Status: Waiting for candidate to upload
+                                    </div>
+                                    <div style="display:flex; gap:6px;">
+                                        <input type="text" readonly id="doc-link-{{ app._id }}"
+                                               value="{{ url_for('onboarding.upload_documents', token=app.doc_token, _external=True) }}"
+                                               style="flex:1; padding:6px 8px; border-radius:6px; border:1px solid var(--border-color); background:#0a0a0a; color:white; font-size:11px;">
+                                        <button type="button" class="btn-ems btn-ems-sm btn-ems-outline"
+                                                onclick="navigator.clipboard.writeText(document.getElementById('doc-link-{{ app._id }}').value); this.innerText='Copied!'; setTimeout(()=>this.innerText='Copy', 1500);">
+                                            Copy
+                                        </button>
+                                    </div>
+
+                                {% else %}
+                                    <!-- Documents upload ho chuke hain - view + verify -->
+                                    <div style="display:flex; gap:10px; margin-bottom:10px; font-size:12px;">
+                                        <a href="{{ url_for('static', filename='uploads/onboarding_docs/' + app.id_proof_file) }}"
+                                           target="_blank" style="color:var(--primary);">
+                                            <i class="fas fa-id-card"></i> ID Proof
+                                        </a>
+                                        <a href="{{ url_for('static', filename='uploads/onboarding_docs/' + app.bank_proof_file) }}"
+                                           target="_blank" style="color:var(--primary);">
+                                            <i class="fas fa-building-columns"></i> Bank Proof
+                                        </a>
+                                    </div>
+
+                                    <form action="{{ url_for('onboarding.toggle_doc_verification', app_id=app._id, doc_type='id') }}" method="POST">
+                                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; margin-bottom:6px;">
+                                            <input type="checkbox" onchange="this.form.submit()" {{ "checked" if app.id_proof_verified else "" }}>
+                                            ID Proof Verified
+                                        </label>
+                                    </form>
+
+                                    <form action="{{ url_for('onboarding.toggle_doc_verification', app_id=app._id, doc_type='bank') }}" method="POST">
+                                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; margin-bottom:8px;">
+                                            <input type="checkbox" onchange="this.form.submit()" {{ "checked" if app.bank_details_verified else "" }}>
+                                            Bank Details Verified
+                                        </label>
+                                    </form>
+
+                                    <form action="{{ url_for('onboarding.notify_admin', app_id=app._id) }}" method="POST">
+                                        <button type="submit" class="btn-ems btn-ems-sm btn-ems-primary" style="width:100%; justify-content:center;"
+                                                {% if not (app.id_proof_verified and app.bank_details_verified) %}
+                                                    disabled style="opacity:.4; cursor:not-allowed;"
+                                                {% endif %}>
+                                            <i class="fas fa-paper-plane"></i> Notify Admin
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Pending Admin Approval -->
+                            {% if app.status == 'Pending Onboarding' %}
+                            <div style="margin-top:6px; padding:8px; background:rgba(250,204,21,0.15); border-radius:8px; font-size:12px; color:#FACC15;">
+                                <i class="fas fa-clock"></i> Waiting for Admin's approval to onboard.
+                            </div>
+                            {% endif %}
+
+                            <!-- Onboarded Success -->
+                            {% if app.status == 'Onboarded' %}
+                            <div style="margin-top:6px; padding:8px; background:rgba(22,163,74,0.15); border-radius:8px; font-size:12px; color:#16A34A;">
+                                ✅ Onboarded<br>
+                                Emp ID: <strong>{{ app.employee_id }}</strong>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            No applications found.
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,258 @@
+/* ==========================================================
+   EMS AI
+   LAYOUT.CSS
+   Dragonfly Inspired Layout
+   ========================================================== */
+
+
+/* ==========================================================
+   APPLICATION LAYOUT
+   ========================================================== */
+
+.app{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:var(--bg-color);
+
+}
+
+
+
+
+
+/* ==========================================================
+   ACTIVE & HOVER
+   ========================================================== */
+
+.menu li a:hover,
+
+.menu li a.active{
+
+    background:rgba(255,90,31,.12);
+
+    color:var(--text-primary);
+
+    border-left:4px solid var(--primary);
+
+}
+
+
+/* ==========================================================
+   MAIN AREA
+   ========================================================== */
+
+.main{
+
+    margin-left:270px;
+
+    width:calc(100% - 270px);
+
+    min-height:100vh;
+
+}
+
+
+/* ==========================================================
+   NAVBAR
+   ========================================================== */
+
+.navbar{
+
+    height:75px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 35px;
+
+    border-bottom:1px solid var(--border-color);
+
+    background:rgba(16,16,16,.85);
+
+    backdrop-filter:blur(15px);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+
+}
+
+
+/* ==========================================================
+   NAVBAR LEFT
+   ========================================================== */
+
+.nav-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.nav-left h2{
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================================
+   NAVBAR RIGHT
+   ========================================================== */
+
+.nav-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+/* ==========================================================
+   PROFILE
+   ========================================================== */
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.profile img{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.profile-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.profile-info span{
+
+    font-size:14px;
+
+    color:var(--text-secondary);
+
+}
+
+
+/* ==========================================================
+   CONTENT
+   ========================================================== */
+
+.content{
+
+    padding:35px;
+
+}
+
+
+/* ==========================================================
+   GRID
+   ========================================================== */
+
+.grid{
+
+    display:grid;
+
+    gap:25px;
+
+}
+
+
+/* ==========================================================
+   FOUR COLUMN GRID
+   ========================================================== */
+
+.grid-4{
+
+    grid-template-columns:repeat(4,1fr);
+
+}
+
+
+/* ==========================================================
+   TWO COLUMN GRID
+   ========================================================== */
+
+.grid-2{
+
+    grid-template-columns:repeat(2,1fr);
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media(max-width:1200px){
+
+    .grid-4{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .sidebar{
+
+        left:-270px;
+
+    }
+
+    .main{
+
+        margin-left:0;
+
+        width:100%;
+
+    }
+
+    .grid-4{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .grid-2{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

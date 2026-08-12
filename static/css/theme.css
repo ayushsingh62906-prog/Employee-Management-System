@@ -1,0 +1,201 @@
+/* ==========================================================
+   EMS AI
+   THEME.CSS
+   Dragonfly Inspired Design System
+   Author : Ayush
+   ========================================================== */
+
+
+/* ==========================================================
+   GOOGLE FONT
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+
+/* ==========================================================
+   ROOT VARIABLES
+   ========================================================== */
+
+:root{
+
+    /* Background Colors */
+   --bg-color:#F8FAFC;
+    --surface-color:#FFFFFF;
+    --surface-hover:#F1F5F9;
+     
+    /* Sidebar (alag rakha hai, isko humesha dark rehna hai) */
+    --sidebar-bg:#0F172A;
+    --sidebar-border:rgba(255,255,255,.08);
+
+    /* Border */
+    --border-color:#E2E8F0;
+
+    /* Border */
+   --border-color:#E2E8F0;
+    /* Text */
+    --text-primary:#0F172A;
+    --text-secondary:#64748B;
+    --text-muted:#94A3B8;
+
+
+    /* Accent */
+   --primary:#6366F1;
+    --primary-hover:#4F46E5;
+
+
+    /* Status */
+     --success:#22C55E;
+    --warning:#FACC15;
+    --danger:#EF4444;
+    --info:#3B82F6;
+
+    /* Radius */
+ --radius-sm:8px;
+    --radius-md:12px;
+    --radius-lg:18px;
+
+    /* Transition */
+    --transition:.25s ease;
+
+
+}
+
+
+/* ==========================================================
+   RESET
+   ========================================================== */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+
+/* ==========================================================
+   BODY
+   ========================================================== */
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:var(--bg-color);
+
+    color:var(--text-primary);
+
+    overflow-x:hidden;
+
+}
+
+
+/* ==========================================================
+   LINKS
+   ========================================================== */
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+
+/* ==========================================================
+   LIST
+   ========================================================== */
+
+ul{
+
+    list-style:none;
+
+}
+
+
+/* ==========================================================
+   BUTTON
+   ========================================================== */
+
+button{
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    font-family:'Inter',sans-serif;
+
+}
+
+
+/* ==========================================================
+   INPUT
+   ========================================================== */
+
+input,
+select,
+textarea{
+
+    font-family:'Inter',sans-serif;
+
+}
+
+
+/* ==========================================================
+   IMAGE
+   ========================================================== */
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+
+/* ==========================================================
+   CUSTOM SCROLLBAR
+   ========================================================== */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:var(--bg-color);
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#CBD5E1;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--primary);
+
+}
+
+
+/* ==========================================================
+   TEXT SELECTION
+   ========================================================== */
+
+::selection{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}

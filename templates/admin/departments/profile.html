@@ -1,0 +1,103 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ department.name }} - Department{% endblock %}
+{% block page_title %}Department Profile{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+
+    <!-- Header -->
+    <div class="page-card-header">
+        <div class="profile-header" style="margin-bottom:0;">
+            <div>
+                <h3>{{ department.name }}</h3>
+                <p>{{ department.department_id }} • {{ department.location or "No location set" }}</p>
+                <span class="badge-ems {% if department.status == 'Active' %}badge-active{% else %}badge-inactive{% endif %}">
+                    {{ department.status }}
+                </span>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:12px;">
+            <a href="{{ url_for('departments.edit_department', department_id=department.department_id) }}" class="btn-ems btn-ems-primary">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{{ url_for('departments.list_departments') }}" class="btn-ems btn-ems-outline">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="info-list" style="margin-top:30px;">
+        <div class="info-item">
+            <span class="info-label">Department ID</span>
+            <span class="info-value">{{ department.department_id }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Head of Department</span>
+            <span class="info-value">{{ department.head or "-" }}</span>
+        </div>
+        <div class="info-item">
+    <span class="info-label">Annual Budget</span>
+    <span class="info-value">₹ {{ "{:,.0f}".format(department.budget or 0) }}</span>
+</div>
+        <div class="info-item">
+            <span class="info-label">Location</span>
+            <span class="info-value">{{ department.location or "-" }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Status</span>
+            <span class="info-value">{{ department.status }}</span>
+        </div>
+        <div class="info-item full-width">
+            <span class="info-label">Description</span>
+            <span class="info-value">{{ department.description or "No description provided." }}</span>
+        </div>
+    </div>
+
+    <!-- Employees in this department -->
+    <div style="margin-top:40px;">
+        <h4 style="margin-bottom:18px;">Employees in this Department ({{ dept_employees|length }})</h4>
+
+        {% if dept_employees %}
+        <table class="ems-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Employee ID</th>
+                    <th>Designation</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in dept_employees %}
+                <tr>
+                    <td>
+                        <strong>{{ emp.full_name }}</strong><br>
+                        <small style="color:var(--text-secondary);">{{ emp.email }}</small>
+                    </td>
+                    <td>{{ emp.employee_id }}</td>
+                    <td>{{ emp.designation }}</td>
+                    <td>{{ emp.employee_type }}</td>
+                    <td>
+                        <span class="badge-ems {% if emp.status == 'Active' %}badge-active{% else %}badge-inactive{% endif %}">
+                            {{ emp.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-users"></i>
+            No employees currently assigned to this department.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

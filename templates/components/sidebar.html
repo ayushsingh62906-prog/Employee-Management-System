@@ -1,0 +1,182 @@
+<!-- ==========================================================
+     FILE : templates/components/sidebar.html
+     PURPOSE : Role-based Sidebar Navigation
+========================================================== -->
+
+<div class="sidebar collapsed" id="sidebar">
+
+    <!-- Logo -->
+    <div class="logo">
+        <i class="fas fa-briefcase" style="color:var(--primary);"></i>
+        <span>EMS Pro</span>
+    </div>
+
+    <!-- User Info -->
+    <div class="user-info">
+        <img src="{{ url_for('static', filename='uploads/profile_photos/' ~ session.photo) if session.get('photo') else url_for('static', filename='uploads/default-avatar.png') }}" 
+     class="user-image"
+     onerror="this.src='https://ui-avatars.com/api/?name={{ session.username }}&background=6366F1&color=fff';"
+     alt="User">
+        <h5>{{ session.username }}</h5>
+        <p>{{ session.role | title }}</p>
+    </div>
+
+    <!-- Menu -->
+    <ul class="menu">
+
+        <!-- ==================== ADMIN MENU ==================== -->
+        {% if session.role == 'admin' %}
+
+            <li>
+                <a href="{{ url_for('admin_dashboard') }}" 
+                   class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('employees.list_employees') }}"
+                   class="{% if 'employees.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-users"></i>
+                    <span>Employees</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('departments.list_departments') }}"
+                   class="{% if 'departments.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-building"></i>
+                    <span>Departments</span>
+                </a>
+            </li>
+
+           <li>
+    <a href="{{ url_for('attendance.list_attendance') }}"
+       class="{% if 'attendance.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-calendar-check"></i>
+        <span>Attendance</span>
+    </a>
+</li>
+
+           <li>
+    <a href="{{ url_for('leave.list_leave_requests') }}"
+       class="{% if 'leave.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-plane-departure"></i>
+        <span>Leave</span>
+    </a>
+</li>
+<li>
+    <a href="{{ url_for('onboarding.list_pending_onboarding') }}"
+       class="{% if 'onboarding.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-user-clock"></i>
+        <span>Pending Onboarding</span>
+    </a>
+</li>
+
+            <li>
+    <a href="{{ url_for('payroll.list_payroll') }}"
+       class="{% if 'payroll.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-money-check-alt"></i>
+        <span>Payroll</span>
+    </a>
+</li>
+<li>
+    <a href="{{ url_for('announcements.list_announcements') }}"
+       class="{% if 'announcements.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-bullhorn"></i>
+        <span>Announcements</span>
+    </a>
+</li>
+
+<li>
+    <a href="{{ url_for('settings.change_password') }}"
+       class="{% if 'settings.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+    </a>
+</li>
+
+        <!-- ==================== HR MENU ==================== -->
+        {% elif session.role == 'hr' %}
+
+            <li>
+                <a href="{{ url_for('hr_dashboard') }}">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+    <a href="{{ url_for('jobs.list_jobs') }}"
+       class="{% if 'jobs.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-briefcase"></i>
+        <span>Job Openings</span>
+    </a>
+</li>
+<li>
+    <a href="{{ url_for('exit.list_resignations') }}"
+       class="{% if 'exit.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-door-open"></i>
+        <span>Exit / Resignations</span>
+    </a>
+</li>
+
+            
+
+        <!-- ==================== EMPLOYEE MENU ==================== -->
+        {% elif session.role == 'employee' %}
+
+            <li>
+                <a href="{{ url_for('employee_dashboard') }}">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            
+           <li>
+    <a href="{{ url_for('employee_attendance.attendance_home') }}"
+       class="{% if 'employee_attendance.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-calendar-check"></i>
+        <span>Attendance</span>
+    </a>
+</li>
+
+            <li>
+    <a href="{{ url_for('employee_leave.leave_home') }}"
+       class="{% if 'employee_leave.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-plane-departure"></i>
+        <span>Leave</span>
+    </a>
+</li>
+            <li>
+                <a href="{{ url_for('employee_payroll.list_payslips') }}"
+   class="{% if 'employee_payroll.' in request.endpoint %}active{% endif %}">
+    <i class="fas fa-money-check-alt"></i>
+    <span>Salary</span>
+</a>
+            </li>
+            <li>
+    <a href="{{ url_for('employee_exit.exit_home') }}"
+       class="{% if 'employee_exit.' in request.endpoint %}active{% endif %}">
+        <i class="fas fa-door-open"></i>
+        <span>Resignation</span>
+    </a>
+</li>
+
+          
+
+          
+        {% endif %}
+
+        <!-- Common Logout -->
+        <li style="margin-top: 30px;">
+            <a href="{{ url_for('logout') }}" style="color: #EF4444;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+
+    </ul>
+</div>

@@ -1,0 +1,71 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ employee.full_name }} - Attendance{% endblock %}
+{% block page_title %}Attendance History{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+
+    <!-- Header -->
+    <div class="page-card-header">
+        <div>
+            <h4>{{ employee.full_name }}</h4>
+            <p style="color:var(--text-secondary); margin-top:6px; font-size:14px;">
+                {{ employee.employee_id }} • {{ employee.department }} • {{ employee.designation }}
+            </p>
+        </div>
+
+        <div>
+            <a href="{{ url_for('attendance.list_attendance') }}" class="btn-ems btn-ems-outline">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div style="overflow-x:auto; margin-top:10px;">
+        <table class="ems-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Remarks</th>
+                    <th>Marked By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>
+                        <span class="badge-ems 
+                            {% if record.status == 'Present' %}badge-active
+                            {% elif record.status == 'Absent' %}badge-inactive
+                            {% else %}badge-type{% endif %}">
+                            {{ record.status }}
+                        </span>
+                    </td>
+                    <td>{{ record.check_in or "-" }}</td>
+                    <td>{{ record.check_out or "-" }}</td>
+                    <td>{{ record.remarks or "-" }}</td>
+                    <td>{{ record.marked_by or "-" }}</td>
+                </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            No attendance records found for this employee.
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

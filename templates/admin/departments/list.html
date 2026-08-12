@@ -1,0 +1,148 @@
+{% extends "base/base.html" %}
+
+{% block title %}Department Management{% endblock %}
+{% block page_title %}Department Management{% endblock %}
+
+{% block content %}
+
+<div class="page-card">
+
+    <!-- Header -->
+    <div class="page-card-header">
+        <div>
+            <h4>{{ "Trash" if show_deleted else "Department Management" }}</h4>
+            <p style="color:var(--text-secondary); margin-top:6px; font-size:14px;">
+                {% if show_deleted %}
+                    Soft deleted departments. Restore or permanently delete them.
+                {% else %}
+                    View, search, filter and manage all departments.
+                {% endif %}
+            </p>
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            {% if show_deleted %}
+                <a href="{{ url_for('departments.list_departments') }}" class="btn-ems btn-ems-outline">
+                    <i class="fas fa-arrow-left"></i> Back to Departments
+                </a>
+            {% else %}
+                <a href="{{ url_for('departments.list_departments', trash=1) }}" class="btn-ems btn-ems-outline">
+                    <i class="fas fa-trash"></i> Trash
+                </a>
+                <a href="{{ url_for('departments.add_department') }}" class="btn-ems btn-ems-primary">
+                    <i class="fas fa-plus"></i> Add Department
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Count -->
+    <p style="margin-bottom:18px; color:var(--text-secondary);">
+        <strong>{{ departments|length }}</strong>
+        {{ "Deleted Department(s)" if show_deleted else "Department(s) Found" }}
+    </p>
+
+    <!-- Filter Bar (sirf normal list me) -->
+    {% if not show_deleted %}
+    <form method="GET" class="filter-bar">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search by name, ID or description...">
+
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Active" {% if status_filter == "Active" %}selected{% endif %}>Active</option>
+            <option value="Inactive" {% if status_filter == "Inactive" %}selected{% endif %}>Inactive</option>
+        </select>
+
+        <button type="submit" class="btn-ems btn-ems-primary btn-ems-sm">
+            <i class="fas fa-filter"></i> Filter
+        </button>
+
+        {% if search_query or status_filter %}
+            <a href="{{ url_for('departments.list_departments') }}" class="btn-ems btn-ems-outline btn-ems-sm">
+                Clear
+            </a>
+        {% endif %}
+    </form>
+    {% endif %}
+
+    <!-- Table -->
+    <div style="overflow-x:auto;">
+        <table class="ems-table">
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>ID</th>
+                    <th>Head</th>
+                    <th>Employees</th>
+                    <th>Budget</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dept in departments %}
+                <tr>
+                    <td>
+                        <strong>{{ dept.name }}</strong>
+                        {% if dept.description %}
+                            <br><small style="color:var(--text-secondary);">{{ dept.description[:60] }}{% if dept.description|length > 60 %}...{% endif %}</small>
+                        {% endif %}
+                    </td>
+                    <td>{{ dept.department_id }}</td>
+                    <td>{{ dept.head or "-" }}</td>
+                    <td>{{ dept.employee_count or 0 }}</td>
+                    <td>₹ {{ "{:,.0f}".format(dept.budget or 0) }}</td>
+                    <td>
+                        <span class="badge-ems {% if dept.status == 'Active' %}badge-active{% else %}badge-inactive{% endif %}">
+                            {{ dept.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-icons">
+                            {% if show_deleted %}
+                                <!-- Restore -->
+                                <form action="{{ url_for('departments.restore_department', department_id=dept.department_id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="icon-restore" title="Restore">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                </form>
+                                <!-- Permanent Delete -->
+                                <form action="{{ url_for('departments.permanent_delete_department', department_id=dept.department_id) }}" method="POST" style="display:inline;"
+                                      onsubmit="return confirm('Permanently delete this department? This cannot be undone.');">
+                                    <button type="submit" class="icon-delete" title="Delete Forever">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            {% else %}
+                                <a href="{{ url_for('departments.view_department', department_id=dept.department_id) }}" class="icon-view" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ url_for('departments.edit_department', department_id=dept.department_id) }}" class="icon-edit" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ url_for('departments.soft_delete_department', department_id=dept.department_id) }}" method="POST" style="display:inline;"
+                                      onsubmit="return confirm('Move this department to Trash?');">
+                                    <button type="submit" class="icon-delete" title="Move to Trash">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="empty-row">
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-building"></i>
+                            {{ "No deleted departments." if show_deleted else "No departments found. Try adding one!" }}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

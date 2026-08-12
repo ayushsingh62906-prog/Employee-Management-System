@@ -1,0 +1,188 @@
+<!-- ==========================================================
+     FILE : templates/admin/employees/list.html
+     PURPOSE : Employee Management - List / Search / Filter
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}Employee Management{% endblock %}
+{% block page_title %}Employee Management{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <h2>{{ "Trash" if show_deleted else "Employee Management" }}</h2>
+    <p>
+        {% if show_deleted %}
+            Soft deleted employees. Restore or permanently delete them.
+        {% else %}
+            View, search, filter and manage all employees.
+        {% endif %}
+    </p>
+</div>
+
+<div class="page-card">
+
+    <div class="page-card-header">
+
+        <h4>
+            {{ employees|length }}
+            {{ "Deleted Employee(s)" if show_deleted else "Employee(s) Found" }}
+        </h4>
+
+        <div style="display:flex; gap:10px;">
+
+            {% if show_deleted %}
+                <a href="{{ url_for('employees.list_employees') }}" class="btn-ems btn-ems-outline">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Employees
+                </a>
+            {% else %}
+                <a href="{{ url_for('employees.list_employees', trash=1) }}" class="btn-ems btn-ems-outline">
+                    <i class="fa-solid fa-trash"></i> Trash
+                </a>
+                <a href="{{ url_for('employees.add_employee') }}" class="btn-ems btn-ems-primary">
+                    <i class="fa-solid fa-plus"></i> Add Employee
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         SEARCH & FILTER
+    ========================= -->
+
+    {% if not show_deleted %}
+    <form method="GET" action="{{ url_for('employees.list_employees') }}" class="filter-bar">
+
+        <input type="text" name="q" placeholder="Search by name, email, phone or ID..."
+               value="{{ search_query }}">
+
+        <select name="department">
+            <option value="">All Departments</option>
+            {% for dept in departments_list %}
+                <option value="{{ dept }}" {{ "selected" if dept==department_filter else "" }}>{{ dept }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Active" {{ "selected" if status_filter=="Active" else "" }}>Active</option>
+            <option value="Inactive" {{ "selected" if status_filter=="Inactive" else "" }}>Inactive</option>
+        </select>
+
+        <button type="submit" class="btn-ems btn-ems-primary">
+            <i class="fa-solid fa-magnifying-glass"></i> Filter
+        </button>
+
+        {% if search_query or department_filter or status_filter %}
+            <a href="{{ url_for('employees.list_employees') }}" class="btn-ems btn-ems-outline">Clear</a>
+        {% endif %}
+
+    </form>
+    {% endif %}
+
+    <!-- =========================
+         TABLE
+    ========================= -->
+
+    <table class="ems-table">
+
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Employee ID</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for emp in employees %}
+            <tr>
+                <td>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <img class="table-avatar"
+                             src="{{ url_for('static', filename='uploads/employees/' ~ emp.photo) if emp.photo else url_for('static', filename='images/user.png') }}">
+                        <div>
+                            <div style="font-weight:600;">{{ emp.full_name }}</div>
+                            <div style="font-size:12px; color:#94A3B8;">{{ emp.email }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ emp.employee_id }}</td>
+                <td>{{ emp.department }}</td>
+                <td>{{ emp.designation }}</td>
+                <td><span class="badge-ems badge-type">{{ emp.employee_type }}</span></td>
+                <td>
+                    <span class="badge-ems {{ 'badge-active' if emp.status=='Active' else 'badge-inactive' }}">
+                        {{ emp.status }}
+                    </span>
+                </td>
+                <td>
+                    <div class="action-icons">
+
+                        {% if show_deleted %}
+
+                            <form method="POST" action="{{ url_for('employees.restore_employee', employee_id=emp.employee_id) }}">
+                                <button type="submit" class="icon-restore" title="Restore">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </button>
+                            </form>
+
+                            <form method="POST"
+                                  action="{{ url_for('employees.permanent_delete_employee', employee_id=emp.employee_id) }}"
+                                  onsubmit="return confirm('This will permanently delete {{ emp.full_name }}. This action cannot be undone. Continue?');">
+                                <button type="submit" class="icon-delete" title="Delete Permanently">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+
+                        {% else %}
+
+                            <a href="{{ url_for('employees.view_employee', employee_id=emp.employee_id) }}"
+                               class="icon-view" title="View Profile">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+
+                            <a href="{{ url_for('employees.edit_employee', employee_id=emp.employee_id) }}"
+                               class="icon-edit" title="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+
+                            <form method="POST"
+                                  action="{{ url_for('employees.soft_delete_employee', employee_id=emp.employee_id) }}"
+                                  onsubmit="return confirm('Move {{ emp.full_name }} to Trash?');">
+                                <button type="submit" class="icon-delete" title="Delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr class="empty-row">
+                <td colspan="7">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-user-slash"></i>
+                        {{ "No deleted employees." if show_deleted else "No employees found. Try adding one!" }}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

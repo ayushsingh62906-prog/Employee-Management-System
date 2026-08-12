@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply - {{ job.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-box" style="max-width:520px;">
+
+    <div class="auth-logo">
+        <i class="fas fa-file-alt"></i>
+        <h2>Apply for Job</h2>
+        <p>{{ job.title }}</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="auth-flash auth-flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" class="auth-form">
+        <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" name="full_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone">
+        </div>
+
+        <div class="form-group">
+            <label>Experience</label>
+            <input type="text" name="experience" placeholder="e.g. 3 years">
+        </div>
+
+        <div class="form-group">
+            <label>Resume (PDF/DOC)</label>
+            <input type="file" name="resume" accept=".pdf,.doc,.docx">
+        </div>
+
+        <div class="form-group">
+            <label>Cover Letter</label>
+            <textarea name="cover_letter" rows="3" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border-color); background:#0a0a0a; color:white;"></textarea>
+        </div>
+
+        <button type="submit" class="btn-auth">Submit Application</button>
+    </form>
+
+    <div class="back-home">
+        <a href="{{ url_for('home') }}"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+</div>
+
+</body>
+</html>

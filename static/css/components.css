@@ -1,0 +1,1125 @@
+/* ==========================================================
+   EMS AI
+   FILE : components.css
+
+   PURPOSE :
+   Reusable UI Components
+
+   CONTENTS :
+   1. Page Header
+   2. Buttons
+   3. Cards
+   4. Statistics Cards
+   5. Search Box
+   6. Status Badges
+   7. Utility Classes
+
+   Author : Ayush
+   ========================================================== */
+
+
+
+/* ==========================================================
+   PAGE HEADER
+   PURPOSE :
+   Har page ke top title aur description ke liye
+   ========================================================== */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.page-title h1{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:var(--text-primary);
+
+}
+
+.page-title p{
+
+    margin-top:8px;
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+}
+
+
+
+/* ==========================================================
+   BUTTON BASE
+   PURPOSE :
+   Sabhi buttons ki common styling
+   ========================================================== */
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:var(--transition);
+
+}
+
+
+
+/* ==========================================================
+   PRIMARY BUTTON
+   PURPOSE :
+   Save / Add / Submit Buttons
+   ========================================================== */
+
+.btn-primary{
+
+    background:var(--primary);
+
+    color:#fff;
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-hover);
+
+}
+
+
+
+/* ==========================================================
+   SECONDARY BUTTON
+   PURPOSE :
+   Cancel / Back Button
+   ========================================================== */
+
+.btn-secondary{
+
+    background:transparent;
+
+    color:var(--text-primary);
+
+    border:1px solid var(--border-color);
+
+}
+
+.btn-secondary:hover{
+
+    background:var(--surface-hover);
+
+}
+
+
+
+/* ==========================================================
+   DANGER BUTTON
+   PURPOSE :
+   Delete Button
+   ========================================================== */
+
+.btn-danger{
+
+    background:var(--danger);
+
+    color:#fff;
+
+    border:none;
+
+}
+
+.btn-danger:hover{
+
+    opacity:.85;
+
+}
+
+
+
+/* ==========================================================
+   ICON BUTTON
+   PURPOSE :
+   Edit / Delete / View Icons
+   ========================================================== */
+
+.btn-icon{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    color:var(--text-primary);
+
+    transition:var(--transition);
+
+}
+
+.btn-icon:hover{
+
+    border-color:var(--primary);
+
+    color:var(--primary);
+
+}
+
+
+
+/* ==========================================================
+   CARD
+   PURPOSE :
+   Common Card Layout
+   ========================================================== */
+
+.card{
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:18px;
+
+    padding:25px;
+
+    transition:var(--transition);
+
+}
+
+.card:hover{
+
+    border-color:var(--primary);
+
+    transform:translateY(-3px);
+
+}
+
+
+
+/* ==========================================================
+   CARD HEADER
+   ========================================================== */
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.card-header h3{
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+
+
+/* ==========================================================
+   CARD BODY
+   ========================================================== */
+
+.card-body{
+
+    width:100%;
+
+}
+
+
+
+/* ==========================================================
+   STATISTICS CARD
+   PURPOSE :
+   Dashboard Statistics
+   ========================================================== */
+
+.stat-card{
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:18px;
+
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+.stat-card:hover{
+
+    border-color:var(--primary);
+
+    transform:translateY(-4px);
+
+}
+
+.stat-title{
+
+    color:var(--text-secondary);
+
+    font-size:14px;
+
+    margin-bottom:15px;
+
+}
+
+.stat-number{
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+.stat-change{
+
+    margin-top:12px;
+
+    font-size:14px;
+
+    color:var(--success);
+
+}
+
+
+
+/* ==========================================================
+   SEARCH BOX
+   PURPOSE :
+   Employee Search
+   Department Search
+   Attendance Search
+   ========================================================== */
+
+.search-box{
+
+    width:320px;
+
+    position:relative;
+
+}
+.search-box i{
+
+    position:absolute;
+
+    right:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:var(--text-secondary);
+
+    pointer-events:none;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    color:var(--text-primary);
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.search-box input:focus{
+
+    border-color:var(--primary);
+
+}
+
+
+
+/* ==========================================================
+   STATUS BADGES
+   PURPOSE :
+   Employee Status
+   Leave Status
+   Attendance Status
+   ========================================================== */
+
+.badge{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+
+/* ---------- Active ---------- */
+
+.badge-success{
+
+    background:rgba(34,197,94,.15);
+
+    color:var(--success);
+
+}
+
+
+
+/* ---------- Pending ---------- */
+
+.badge-warning{
+
+    background:rgba(250,204,21,.15);
+
+    color:var(--warning);
+
+}
+
+
+
+/* ---------- Rejected ---------- */
+
+.badge-danger{
+
+    background:rgba(239,68,68,.15);
+
+    color:var(--danger);
+
+}
+
+
+
+/* ---------- Info ---------- */
+
+.badge-info{
+
+    background:rgba(59,130,246,.15);
+
+    color:var(--info);
+
+}
+
+
+
+/* ==========================================================
+   FLEX UTILITIES
+   PURPOSE :
+   Common Layout Helpers
+   ========================================================== */
+
+.flex{
+
+    display:flex;
+
+}
+
+.align-center{
+
+    align-items:center;
+
+}
+
+.justify-between{
+
+    justify-content:space-between;
+
+}
+
+.gap-10{
+
+    gap:10px;
+
+}
+
+.gap-20{
+
+    gap:20px;
+
+}
+
+.mt-20{
+
+    margin-top:20px;
+
+}
+
+.mt-30{
+
+    margin-top:30px;
+
+}
+
+.mb-20{
+
+    margin-bottom:20px;
+
+}
+
+.mb-30{
+
+    margin-bottom:30px;
+
+}
+
+/* ==========================================================
+   TABLE COMPONENT
+   PURPOSE :
+   Employee, Department, Attendance, Leave, Payroll
+   ke liye reusable professional table.
+   ========================================================== */
+
+.table-container{
+
+    width:100%;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+}
+
+.table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.table thead{
+
+    background:#141414;
+
+}
+
+.table thead th{
+
+    padding:18px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:var(--text-secondary);
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+}
+
+.table tbody tr{
+
+    transition:var(--transition);
+
+    border-top:1px solid var(--border-color);
+
+}
+
+.table tbody tr:hover{
+
+    background:var(--surface-hover);
+
+}
+
+.table tbody td{
+
+    padding:18px;
+
+    color:var(--text-primary);
+
+    font-size:15px;
+
+}
+
+
+
+/* ==========================================================
+   EMPLOYEE CELL
+   PURPOSE :
+   Employee Image + Name + Email
+   ========================================================== */
+
+.employee-cell{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.employee-cell img{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.employee-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.employee-info h4{
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.employee-info span{
+
+    font-size:13px;
+
+    color:var(--text-secondary);
+
+}
+
+
+
+/* ==========================================================
+   ACTION BUTTON GROUP
+   PURPOSE :
+   Table Actions
+   ========================================================== */
+
+.action-group{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+
+/* ==========================================================
+   THREE DOT ACTION MENU
+   PURPOSE :
+   Professional Action Dropdown
+   ========================================================== */
+
+.action-menu{
+
+    position:relative;
+
+    display:inline-block;
+
+}
+
+.action-toggle{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:12px;
+
+    background:transparent;
+
+    color:var(--text-secondary);
+
+    border:1px solid var(--border-color);
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+}
+
+.action-toggle:hover{
+
+    color:var(--primary);
+
+    border-color:var(--primary);
+
+}
+
+.action-dropdown{
+
+    position:absolute;
+
+    top:48px;
+
+    right:0;
+
+    width:180px;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    display:none;
+
+    z-index:999;
+
+}
+
+.action-dropdown a{
+
+    display:block;
+
+    padding:14px 18px;
+
+    color:var(--text-secondary);
+
+    transition:.25s;
+
+}
+
+.action-dropdown a:hover{
+
+    background:var(--surface-hover);
+
+    color:var(--primary);
+
+}
+
+.action-menu:hover .action-dropdown{
+
+    display:block;
+
+}
+
+
+
+/* ==========================================================
+   PAGINATION
+   PURPOSE :
+   Reusable Pagination
+   ========================================================== */
+
+.pagination{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:25px;
+
+}
+
+.page-item{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:12px;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    color:var(--text-secondary);
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+}
+
+.page-item:hover{
+
+    border-color:var(--primary);
+
+    color:var(--primary);
+
+}
+
+.page-item.active{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+
+
+/* ==========================================================
+   EMPTY STATE
+   PURPOSE :
+   No Data Found UI
+   ========================================================== */
+
+.empty-state{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:70px 20px;
+
+    text-align:center;
+
+}
+
+.empty-state img{
+
+    width:180px;
+
+    opacity:.75;
+
+}
+
+.empty-state h2{
+
+    margin-top:25px;
+
+    font-size:24px;
+
+}
+
+.empty-state p{
+
+    margin-top:10px;
+
+    color:var(--text-secondary);
+
+}
+
+
+
+/* ==========================================================
+   LOADER
+   PURPOSE :
+   Loading Animation
+   ========================================================== */
+
+.loader{
+
+    width:55px;
+
+    height:55px;
+
+    border:4px solid #222;
+
+    border-top:4px solid var(--primary);
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    margin:auto;
+
+}
+
+@keyframes spin{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   TOAST NOTIFICATION
+   PURPOSE :
+   Success / Error / Warning Messages
+   ========================================================== */
+
+.toast{
+
+    position:fixed;
+
+    top:30px;
+
+    right:30px;
+
+    min-width:300px;
+
+    background:var(--surface-color);
+
+    border-left:5px solid var(--primary);
+
+    border-radius:14px;
+
+    padding:18px;
+
+    color:var(--text-primary);
+
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+
+    z-index:9999;
+
+}
+
+
+
+/* ==========================================================
+   MODAL
+   PURPOSE :
+   Reusable Popup Window
+   ========================================================== */
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.75);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    visibility:hidden;
+
+    opacity:0;
+
+    transition:var(--transition);
+
+}
+
+.modal{
+
+    width:600px;
+
+    max-width:95%;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:18px;
+
+    padding:30px;
+
+}
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.modal-title{
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.modal-close{
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    color:var(--text-secondary);
+
+}
+
+.modal-close:hover{
+
+    color:var(--danger);
+
+}
+
+.modal-body{
+
+    margin-top:20px;
+
+}
+
+.modal-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+
+
+/* ==========================================================
+   SHOW MODAL
+   PURPOSE :
+   Add "show" class using JavaScript
+   ========================================================== */
+
+.modal-overlay.show{
+
+    visibility:visible;
+
+    opacity:1;
+
+}
+/* ==========================================================
+   TOAST CONTAINER
+   PURPOSE :
+   Multiple flash messages ek stack me top-right dikhane ke liye
+   ========================================================== */
+
+.toast-container{
+
+    position:fixed;
+    top:90px;
+    right:25px;
+    z-index:9999;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+}
+
+/* toast class already component.css me hai, bas position ko
+   static kar rahe hain kyunki container khud fixed hai */
+.toast-container .toast{
+
+    position:static;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    min-width:280px;
+    animation:slideIn .3s ease;
+
+}
+
+.toast-close{
+
+    cursor:pointer;
+    font-size:20px;
+    color:var(--text-secondary);
+    line-height:1;
+
+}
+
+.toast-close:hover{
+
+    color:var(--text-primary);
+
+}
+
+/* Category ke hisaab se left border ka color */
+.toast-success{ border-left-color:var(--success); }
+.toast-warning{ border-left-color:var(--warning); }
+.toast-danger{  border-left-color:var(--danger); }
+.toast-info{    border-left-color:var(--info); }
+
+@keyframes slideIn{
+
+    from{ opacity:0; transform:translateX(40px); }
+    to{ opacity:1; transform:translateX(0); }
+
+}

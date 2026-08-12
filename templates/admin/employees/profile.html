@@ -1,0 +1,120 @@
+<!-- ==========================================================
+     FILE : templates/admin/employees/profile.html
+     PURPOSE : Employee Profile (View Only)
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}{{ employee.full_name }} - Profile{% endblock %}
+{% block page_title %}Employee Profile{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;">
+    <div>
+        <h2>Employee Profile</h2>
+        <p>Complete details of {{ employee.full_name }}</p>
+    </div>
+
+    <div style="display:flex; gap:10px;">
+        <a href="{{ url_for('employees.edit_employee', employee_id=employee.employee_id) }}" class="btn-ems btn-ems-primary">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a href="{{ url_for('employees.list_employees') }}" class="btn-ems btn-ems-outline">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+
+<div class="page-card">
+
+    <div class="page-card-header">
+
+        <div class="profile-header">
+            <img class="profile-avatar"
+                 src="{{ url_for('static', filename='uploads/employees/' ~ employee.photo) if employee.photo else url_for('static', filename='images/user.png') }}">
+            <div>
+                <h3>{{ employee.full_name }}</h3>
+                <p>{{ employee.designation }} &bull; {{ employee.department }}</p>
+                <span class="badge-ems {{ 'badge-active' if employee.status=='Active' else 'badge-inactive' }}">
+                    {{ employee.status }}
+                </span>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <a href="{{ url_for('employees.edit_employee', employee_id=employee.employee_id) }}"
+               class="btn-ems btn-ems-primary">
+                <i class="fa-solid fa-pen"></i> Edit
+            </a>
+            <a href="{{ url_for('employees.list_employees') }}" class="btn-ems btn-ems-outline">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+        </div>
+
+    </div>
+
+    <hr style="border:none; border-top:1px solid #F1F5F9; margin:20px 0;">
+
+    <div class="info-list">
+
+        <div class="info-item">
+            <span class="info-label">Employee ID</span>
+            <span class="info-value">{{ employee.employee_id }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ employee.email }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Phone</span>
+            <span class="info-value">{{ employee.phone or "-" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Gender</span>
+            <span class="info-value">{{ employee.gender or "-" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Date of Birth</span>
+            <span class="info-value">{{ employee.dob or "-" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Department</span>
+            <span class="info-value">{{ employee.department }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Designation</span>
+            <span class="info-value">{{ employee.designation }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Employee Type</span>
+            <span class="info-value">{{ employee.employee_type }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Date of Joining</span>
+            <span class="info-value">{{ employee.date_of_joining or "-" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Monthly Salary</span>
+            <span class="info-value">₹ {{ "%.2f"|format(employee.salary or 0) }}</span>
+        </div>
+
+        <div class="info-item full-width" style="grid-column:1 / -1;">
+            <span class="info-label">Address</span>
+            <span class="info-value">{{ employee.address or "-" }}</span>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

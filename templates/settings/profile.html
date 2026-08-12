@@ -1,0 +1,91 @@
+<!-- ==========================================================
+     FILE : templates/settings/profile.html
+     PURPOSE : Update own profile (Name, Phone, Photo)
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}My Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+
+<!-- ============ SETTINGS TABS (Profile / Password) ============ -->
+<div style="display:flex; gap:12px; margin-bottom:20px;">
+
+    <a href="{{ url_for('settings.update_profile') }}"
+       class="btn-ems {{ 'btn-ems-primary' if request.endpoint == 'settings.update_profile' else 'btn-ems-outline' }}">
+        <i class="fa-solid fa-user"></i> Profile
+    </a>
+
+    <a href="{{ url_for('settings.change_password') }}"
+       class="btn-ems {{ 'btn-ems-primary' if request.endpoint == 'settings.change_password' else 'btn-ems-outline' }}">
+        <i class="fa-solid fa-lock"></i> Change Password
+    </a>
+
+</div>
+
+<div class="page-card" style="max-width:600px;">
+
+    <div class="page-card-header">
+        <h4>Profile Information</h4>
+    </div>
+
+    <form method="POST"
+          action="{{ url_for('settings.update_profile') }}"
+          enctype="multipart/form-data">
+
+        <!-- ============ PHOTO ============ -->
+
+        <div class="form-group full-width" style="margin-bottom:20px;">
+            <label>Profile Photo</label>
+            <div class="photo-upload-box">
+                <img id="photoPreview"
+                     src="{{ url_for('static', filename='uploads/profile_photos/' ~ user.photo) if user.photo else url_for('static', filename='images/user.png') }}"
+                     onerror="this.src='https://ui-avatars.com/api/?name={{ user.username }}&background=6366F1&color=fff';">
+                <input type="file" name="photo" accept="image/*" onchange="previewPhoto(this)">
+            </div>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns:1fr;">
+
+            <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="full_name" required value="{{ user.username }}">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="{{ user.email }}" disabled
+                       style="opacity:.6; cursor:not-allowed;">
+                <small style="color:var(--text-secondary); font-size:12px;">
+                    Email cannot be changed here.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" value="{{ user.phone or '' }}" placeholder="+91 98765 43210">
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-ems btn-ems-primary">
+                <i class="fa-solid fa-check"></i> Save Changes
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+function previewPhoto(input) {
+    if (input.files && input.files[0]) {
+        document.getElementById('photoPreview').src = URL.createObjectURL(input.files[0]);
+    }
+}
+</script>
+
+{% endblock %}

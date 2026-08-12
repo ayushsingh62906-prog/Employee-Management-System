@@ -1,0 +1,140 @@
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    width:260px;
+
+    height:100vh;
+
+   background:var(--sidebar-bg);
+
+    color:white;
+
+    overflow-y:auto;
+
+    transition:.35s;
+
+    z-index:1000;
+
+}
+
+/* ================================= */
+
+.sidebar.collapsed{
+
+    left:-260px;
+
+}
+
+/* ================================= */
+
+.logo{
+
+    height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    font-size:22px;
+
+    font-weight:600;
+
+   border-bottom:1px solid var(--sidebar-border);
+
+}
+
+/* ================================= */
+
+.user-info{
+
+    text-align:center;
+
+    padding:25px 15px;
+
+}
+
+.user-image{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+   border:3px solid var(--primary);
+
+   display:block;         
+    margin:0 auto;          
+
+
+}
+
+.user-info h5{
+       margin-bottom:4px;
+    margin-top:15px;
+
+}
+
+.user-info p{
+
+    color:#9CA3AF;
+
+}
+
+/* ================================= */
+
+.menu{
+
+    padding-top:20px;
+
+}
+
+.menu li{
+
+    margin:5px 0;
+
+}
+
+.menu li a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    color:white;
+
+    padding:15px 22px;
+
+    transition:.3s;
+
+}
+
+.menu li a:hover{
+
+background:var(--primary);
+
+}
+
+.menu li a i{
+
+    width:25px;
+
+    text-align:center;
+
+}
+

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Upload - {{ job_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="auth-body">
+
+    <div class="auth-box" style="max-width:560px;">
+
+        <div class="auth-logo">
+            <i class="fas fa-folder-open"></i>
+            <h2>Document Verification</h2>
+            <p>{{ job_title }} &middot; {{ candidate_name }}</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="auth-flash auth-flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">
+            Please upload the following documents to proceed with your onboarding.
+            Accepted formats: PDF, PNG, JPG.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="auth-form">
+
+            <div class="form-group">
+                <label>ID Proof (Aadhar / PAN / Passport) *</label>
+                <input type="file" name="id_proof" accept=".pdf,.png,.jpg,.jpeg" required>
+            </div>
+
+            <div class="form-group">
+                <label>Bank Proof (Passbook / Cancelled Cheque) *</label>
+                <input type="file" name="bank_proof" accept=".pdf,.png,.jpg,.jpeg" required>
+            </div>
+
+            <div class="form-group">
+                <label>Bank Account Number</label>
+                <input type="text" name="bank_account_number" placeholder="Optional, if visible on document">
+            </div>
+
+            <div class="form-group">
+                <label>Bank IFSC Code</label>
+                <input type="text" name="bank_ifsc" placeholder="Optional, if visible on document">
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-upload"></i> Submit Documents
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

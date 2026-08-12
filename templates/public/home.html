@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS Pro - Employee Management System</title>
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar */
+        .public-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(16,16,16,0.9);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .nav-links a {
+            margin-left: 18px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-login:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-register {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-register:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 70px 20px 50px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 17px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* Sections */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 22px;
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .card h3 {
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .card .meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            background: var(--surface-color);
+            border-radius: 16px;
+            border: 1px dashed var(--border-color);
+        }
+
+        /* Footer */
+        .public-footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="public-nav">
+        <div class="logo">
+            <i class="fas fa-briefcase"></i>
+            EMS Pro
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+            <a href="{{ url_for('register') }}" class="btn-register">Register (Admin/HR)</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Employee Management System</h1>
+        <p>Manage employees, attendance, leave, payroll and recruitment — all in one place.</p>
+    </section>
+
+    <!-- Announcements -->
+    <section class="section">
+        <h2 class="section-title">
+            <i class="fas fa-bullhorn"></i> Company Announcements
+        </h2>
+
+        {% if announcements %}
+        <div class="cards-grid">
+            {% for ann in announcements %}
+            <div class="card">
+                <h3>{{ ann.title }}</h3>
+                <p>{{ ann.message[:180] }}{% if ann.message|length > 180 %}...{% endif %}</p>
+                <div class="meta">
+                    Posted by {{ ann.posted_by or "Admin" }}
+                    {% if ann.created_at %}
+                        • {{ ann.created_at.strftime('%d %b %Y') }}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty">
+            <i class="fas fa-bullhorn" style="font-size:28px; margin-bottom:10px; display:block;"></i>
+            No announcements yet.
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Job Openings (placeholder) -->
+    <section class="section">
+        <h2 class="section-title">
+            <i class="fas fa-briefcase"></i> Current Job Openings
+        </h2>
+
+        {% if job_openings %}
+        <div class="cards-grid">
+            {% for job in job_openings %}
+            <div class="card">
+    <h3>{{ job.title }}</h3>
+    <p>{{ job.description[:150] }}{% if job.description|length > 150 %}...{% endif %}</p>
+    <div class="meta">{{ job.department or "" }} {% if job.location %}• {{ job.location }}{% endif %}</div>
+    
+    <a href="{{ url_for('jobs.apply_job', job_id=job._id) }}" 
+       style="display:inline-block; margin-top:12px; color:var(--primary); font-weight:500; font-size:14px;">
+        Apply Now →
+    </a>
+</div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty">
+            <i class="fas fa-briefcase" style="font-size:28px; margin-bottom:10px; display:block;"></i>
+            No job openings at the moment.<br>
+            <small>Check back later or contact HR.</small>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Footer -->
+    <footer class="public-footer">
+        © 2026 EMS Pro • Developed by Ayush Singh Chandel
+    </footer>
+
+</body>
+</html>

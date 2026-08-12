@@ -1,0 +1,143 @@
+<!-- ==========================================================
+     FILE : templates/admin/employees/edit.html
+     PURPOSE : Edit Existing Employee
+=========================================================== -->
+
+{% extends "base/base.html" %}
+
+{% block title %}Edit Employee{% endblock %}
+{% block page_title %}Edit Employee{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;">
+    <div>
+        <h2>Edit Employee</h2>
+        <p>Update details for {{ employee.full_name }} ({{ employee.employee_id }})</p>
+    </div>
+
+    <a href="{{ url_for('employees.view_employee', employee_id=employee.employee_id) }}" class="btn-ems btn-ems-outline">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="page-card">
+
+    <form method="POST"
+          action="{{ url_for('employees.edit_employee', employee_id=employee.employee_id) }}"
+          enctype="multipart/form-data">
+
+        <!-- ============ PHOTO ============ -->
+
+        <div class="form-group full-width" style="margin-bottom:20px;">
+            <label>Profile Photo</label>
+            <div class="photo-upload-box">
+                <img id="photoPreview"
+                     src="{{ url_for('static', filename='uploads/employees/' ~ employee.photo) if employee.photo else url_for('static', filename='images/user.png') }}">
+                <input type="file" name="photo" accept="image/*" onchange="previewPhoto(this)">
+            </div>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="full_name" required value="{{ employee.full_name }}">
+            </div>
+
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" name="email" required value="{{ employee.email }}">
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" value="{{ employee.phone }}">
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <select name="gender">
+                    <option value="">Select</option>
+                    <option value="Male" {{ "selected" if employee.gender=="Male" else "" }}>Male</option>
+                    <option value="Female" {{ "selected" if employee.gender=="Female" else "" }}>Female</option>
+                    <option value="Other" {{ "selected" if employee.gender=="Other" else "" }}>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" name="dob" value="{{ employee.dob }}">
+            </div>
+
+            <div class="form-group">
+                <label>Department <span class="required">*</span></label>
+                <input type="text" name="department" list="departmentOptions" required value="{{ employee.department }}">
+                <datalist id="departmentOptions">
+                    {% for dept in departments_list %}
+                        <option value="{{ dept }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+
+            <div class="form-group">
+                <label>Designation <span class="required">*</span></label>
+                <input type="text" name="designation" required value="{{ employee.designation }}">
+            </div>
+
+            <div class="form-group">
+                <label>Employee Type</label>
+                <select name="employee_type">
+                    {% for t in ["Full-time", "Part-time", "Intern", "Contract"] %}
+                        <option value="{{ t }}" {{ "selected" if employee.employee_type==t else "" }}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Date of Joining</label>
+                <input type="date" name="date_of_joining" value="{{ employee.date_of_joining }}">
+            </div>
+
+            <div class="form-group">
+                <label>Monthly Salary (₹)</label>
+                <input type="number" name="salary" min="0" step="0.01" value="{{ employee.salary }}">
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="Active" {{ "selected" if employee.status=="Active" else "" }}>Active</option>
+                    <option value="Inactive" {{ "selected" if employee.status=="Inactive" else "" }}>Inactive</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Address</label>
+                <textarea name="address" rows="3">{{ employee.address }}</textarea>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-ems btn-ems-primary">
+                <i class="fa-solid fa-check"></i> Update Employee
+            </button>
+            <a href="{{ url_for('employees.view_employee', employee_id=employee.employee_id) }}" class="btn-ems btn-ems-outline">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+function previewPhoto(input) {
+    if (input.files && input.files[0]) {
+        document.getElementById('photoPreview').src = URL.createObjectURL(input.files[0]);
+    }
+}
+</script>
+
+{% endblock %}
