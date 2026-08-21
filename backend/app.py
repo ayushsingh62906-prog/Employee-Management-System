@@ -480,7 +480,28 @@ def logout():
 # =====================================================
 # APPLICATION START
 # =====================================================
-
+@app.context_processor
+def inject_nav_badges():
+    badges = {
+        "pending_leaves": 0,
+        "pending_onboarding": 0,
+        "new_applications": 0,
+        "pending_resignations": 0,
+    }
+    if not session.get("user_id"):
+        return {"nav_badges": badges}
+    role = (session.get("role") or "").lower()
+    try:
+        if role == "admin":
+            badges["pending_leaves"] = leave_requests.count_documents({"status": "Pending"})
+            badges["pending_onboarding"] = recruitment.count_documents({"type": "application", "status": "Pending Onboarding"})
+            badges["pending_resignations"] = recruitment.count_documents({"type": "resignation", "status": "Pending"})
+        elif role == "hr":
+            badges["new_applications"] = recruitment.count_documents({"type": "application", "status": "Applied"})
+            badges["pending_resignations"] = recruitment.count_documents({"type": "resignation", "status": "Pending"})
+    except Exception:
+        pass
+    return {"nav_badges": badges}
 # Ye line app ko start karti hai
 
 if __name__ == "__main__":

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Pro - Employee Management System</title>
+    <title>WorkNest - Employee Management System</title>
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+      <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
     <style>
         body {
             background: var(--bg-color);
@@ -19,26 +19,26 @@
         }
 
         /* Navbar */
-        .public-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 40px;
-            background: rgba(16,16,16,0.9);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(12px);
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+     .public-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+       .logo {
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+}
 
         .logo i {
             color: var(--primary);
@@ -53,25 +53,27 @@
             transition: 0.25s;
         }
 
-        .btn-login {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
+       .btn-login {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    text-decoration: none;
+}
 
-        .btn-login:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+.btn-login:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
 
-        .btn-register {
-            background: var(--primary);
-            color: white;
-        }
+.btn-register {
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+}
 
-        .btn-register:hover {
-            background: var(--primary-hover);
-        }
+.btn-register:hover {
+    background: var(--primary-hover);
+}
 
         /* Hero */
         .hero {
@@ -167,16 +169,104 @@
             font-size: 14px;
             margin-top: 40px;
         }
+        @media (max-width: 992px) {
+
+    .public-nav {
+        padding: 15px 25px;
+    }
+
+    .nav-links a {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+        /* ===========================================
+   MOBILE RESPONSIVE
+=========================================== */
+
+@media (max-width: 768px) {
+
+    .public-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 15px 20px;
+    }
+
+     .public-nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .logo {
+        justify-content: center;
+        margin-bottom: 4px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+        padding: 12px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .hero {
+        padding: 45px 18px 35px;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .section {
+        padding: 0 15px;
+        margin-bottom: 35px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+    }
+}
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
     <nav class="public-nav">
-        <div class="logo">
-            <i class="fas fa-briefcase"></i>
-            EMS Pro
-        </div>
+       <div class="logo">
+    <img src="{{ url_for('static', filename='images/logo.png') }}"
+         alt="WorkNest"
+         style="height: 32px; width: auto; vertical-align: middle; margin-right: 8px;">
+    WorkNest
+</div>
         <div class="nav-links">
             <a href="{{ url_for('login') }}" class="btn-login">Login</a>
             <a href="{{ url_for('register') }}" class="btn-register">Register (Admin/HR)</a>
@@ -185,7 +275,7 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1>Employee Management System</h1>
+        <h1>WorkNest - Employee Management System</h1>
         <p>Manage employees, attendance, leave, payroll and recruitment — all in one place.</p>
     </section>
 
@@ -250,7 +340,7 @@
 
     <!-- Footer -->
     <footer class="public-footer">
-        © 2026 EMS Pro • Developed by Ayush Singh Chandel
+        © 2026 WorkNest • Developed by Ayush Singh Chandel
     </footer>
 
 </body>

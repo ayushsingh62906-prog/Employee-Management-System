@@ -40,6 +40,13 @@ body.auth-body {
     margin-bottom: 10px;
     display: block;
 }
+.auth-logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px auto;
+}
 
 .auth-logo h2 {
     font-size: 24px;
@@ -70,14 +77,16 @@ body.auth-body {
     padding: 13px 15px;
     border-radius: 10px;
     border: 1px solid var(--border-color);
-    background: #0a0a0a;
-    color: white;
+    background: var(--surface-color); 
+    color: var(--text-primary);
     font-size: 15px;
     outline: none;
     transition: 0.25s;
     font-family: 'Inter', sans-serif;
 }
-
+.auth-form .form-group input::placeholder {
+    color: var(--text-secondary);
+}
 .auth-form .form-group input:focus,
 .auth-form .form-group select:focus {
     border-color: var(--primary);

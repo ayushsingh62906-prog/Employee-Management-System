@@ -36,12 +36,13 @@
         <table class="ems-table">
             <thead>
                 <tr>
-                    <th>Candidate</th>
-                    <th>Experience</th>
-                    <th>Resume</th>
-                    <th>Status</th>
-                    <th>Applied On</th>
-                    <th>Actions</th>
+                  <th>Candidate</th>
+<th>Experience</th>
+<th>Match Score</th>
+<th>Resume</th>
+<th>Status</th>
+<th>Applied On</th>
+<th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,8 +55,30 @@
                         <small style="color:var(--text-secondary);">{{ app.phone or "-" }}</small>
                     </td>
 
-                    <!-- Experience -->
-                    <td>{{ app.experience or "-" }}</td>
+                   <!-- Experience -->
+<td>{{ app.experience or "-" }}</td>
+
+<!-- Match Score (Resume Screening) -->
+<td>
+    {% set score = app.match_score if app.match_score is defined and app.match_score is not none else 0 %}
+    {% set score_pct = (score * 100) if score <= 1 else score %}
+    <span style="
+        font-weight: 700;
+        font-size: 14px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        {% if score_pct >= 70 %}
+            background: rgba(34, 197, 94, 0.15); color: #22C55E;
+        {% elif score_pct >= 40 %}
+            background: rgba(250, 204, 21, 0.15); color: #EAB308;
+        {% else %}
+            background: rgba(239, 68, 68, 0.15); color: #EF4444;
+        {% endif %}
+    ">
+        {{ "%.0f"|format(score_pct) }}%
+    </span>
+</td>
+
 
                     <!-- Resume -->
                     <td>
@@ -296,7 +319,7 @@
                 </tr>
                 {% else %}
                 <tr class="empty-row">
-                    <td colspan="6">
+                    <td colspan="7">
                         <div class="empty-state">
                             <i class="fas fa-users"></i>
                             No applications found.

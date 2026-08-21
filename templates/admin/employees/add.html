@@ -67,19 +67,21 @@
             </div>
 
             <div class="form-group">
-                <label>Department <span class="required">*</span></label>
-                <input type="text" name="department" list="departmentOptions" required placeholder="e.g. Engineering">
-                <datalist id="departmentOptions">
-                    {% for dept in departments_list %}
-                        <option value="{{ dept }}">
-                    {% endfor %}
-                </datalist>
-            </div>
+    <label>Department *</label>
+    <select name="department" id="departmentSelect" required>
+        <option value="">Select Department</option>
+        {% for dept in departments_list %}
+            <option value="{{ dept }}">{{ dept }}</option>
+        {% endfor %}
+    </select>
+</div>
 
-            <div class="form-group">
-                <label>Designation <span class="required">*</span></label>
-                <input type="text" name="designation" required placeholder="e.g. Software Engineer">
-            </div>
+<div class="form-group">
+    <label>Designation *</label>
+    <select name="designation" id="designationSelect" required>
+        <option value="">Select Department first</option>
+    </select>
+</div>
 
             <div class="form-group">
                 <label>Employee Type</label>
@@ -122,6 +124,32 @@
 </div>
 
 <script>
+const designationMap = {{ designation_map | tojson }};
+
+const deptSelect = document.getElementById("departmentSelect");
+const desigSelect = document.getElementById("designationSelect");
+
+deptSelect.addEventListener("change", function () {
+    const dept = this.value;
+    desigSelect.innerHTML = '<option value="">Select Designation</option>';
+
+    if (dept && designationMap[dept]) {
+        designationMap[dept].forEach(function (d) {
+            const opt = document.createElement("option");
+            opt.value = d;
+            opt.textContent = d;
+            desigSelect.appendChild(opt);
+        });
+    } else if (dept) {
+        // Agar map me nahi hai to generic options
+        ["Executive", "Senior Executive", "Manager", "Team Lead"].forEach(function (d) {
+            const opt = document.createElement("option");
+            opt.value = d;
+            opt.textContent = d;
+            desigSelect.appendChild(opt);
+        });
+    }
+});
 function previewPhoto(input) {
     if (input.files && input.files[0]) {
         document.getElementById('photoPreview').src = URL.createObjectURL(input.files[0]);

@@ -19,7 +19,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 # db.py se "employees" collection import kar rahe hain
-from db import employees
+from db import employees, departments
 
 # Pichle step me banaya hua decorator import kar rahe hain
 from utils.decorators import role_required
@@ -278,17 +278,32 @@ def add_employee():
         flash(f"Employee '{full_name}' added successfully. Emp ID: {new_emp_id}", "success")
         return redirect(url_for("employees.list_employees"))
 
-    # GET request -> form dikhana
-    departments_list = employees.distinct("department", {"is_deleted": {"$ne": True}})
-    departments_list = [d for d in departments_list if d]
+    # ========== GET request -> form dikhana ==========
+    # Admin ne jo departments add kiye, wahi list
+    dept_docs = list(departments.find(
+        {"is_deleted": {"$ne": True}, "status": "Active"}
+    ).sort("name", 1))
+    departments_list = [d.get("name") for d in dept_docs if d.get("name")]
+
+    DESIGNATION_MAP = {
+        "Engineering": ["Software Engineer", "Senior Developer", "Team Lead", "QA Engineer"],
+        "IT": ["Software Engineer", "System Admin", "Support Engineer", "DevOps Engineer"],
+        "Sales": ["Sales Executive", "Sales Manager", "Account Manager"],
+        "Marketing": ["Marketing Executive", "Content Writer", "Digital Marketer"],
+        "Customer Support": ["Support Executive", "Support Lead", "Customer Success"],
+        "HR": ["HR Executive", "HR Manager", "Recruiter"],
+        "Finance": ["Accountant", "Finance Executive", "Finance Manager"],
+    }
 
     return render_template(
         "admin/employees/add.html",
         departments_list=departments_list,
+        designation_map=DESIGNATION_MAP,
         username=session["username"],
         role=session["role"],
     )
 
+   
 # ==========================================================
 # ROUTE 3 : EDIT EMPLOYEE
 # URL : /admin/employees/edit/<employee_id>

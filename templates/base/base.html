@@ -1,6 +1,6 @@
 <!-- =========================================================
      FILE : templates/base/base.html
-     PURPOSE : Master Layout for Complete EMS Project
+     PURPOSE : Master Layout for Complete WorkNest
      ========================================================= -->
 
 <!DOCTYPE html>
@@ -13,12 +13,12 @@
 
     <!-- Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
     <!-- Dynamic Title -->
     <title>
-        {% block title %}
-            Employee Management System
-        {% endblock %}
+      {% block title %}
+    WorkNest
+{% endblock %}
     </title>
 
    

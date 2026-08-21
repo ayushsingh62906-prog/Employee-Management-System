@@ -3,7 +3,14 @@
 =========================================== */
 
 @media(max-width:992px){
+    .search-box{
+        width: 220px;
+    }
 
+    .page-header{
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 .sidebar{
 
 left:-260px;
@@ -50,7 +57,100 @@ grid-template-columns:1fr;
 =========================================== */
 
 @media(max-width:768px){
+        /* Employee Attendance - Check In / Check Out boxes stack on mobile */
+    div[style*="grid-template-columns:1fr 1fr; gap:20px"]{
+        grid-template-columns: 1fr !important;
+    }
+    .navbar{
+        padding: 0 15px;
+    }
 
+    .navbar-right{
+        gap: 15px;
+    }
+       /* Quick Actions grid inline style hai, isliye attribute-selector +
+       !important se override kar rahe hain */
+    .chart-box > div[style*="grid-template-columns"]{
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Safety net: koi bhi grid/flex item content ki wajah se
+       container se bahar na nikle */
+    .cards-container,
+    .dashboard-row,
+    .chart-box,
+    .activity-box,
+    .page-card{
+        min-width: 0;
+    }
+
+    .cards-container > *,
+    .dashboard-row > *{
+        min-width: 0;
+    }
+    
+    .page-header{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .page-title h1{
+        font-size: 22px;
+    }
+
+    .dashboard-header h2{
+        font-size: 20px;
+    }
+
+    .stat-card,
+    .card{
+        padding: 16px;
+    }
+
+    .stat-number{
+        font-size: 26px;
+    }
+
+    .chart-box{
+        min-height: 250px;
+        padding: 14px;
+    }
+
+    /* Generic .table (components.css) ko bhi scroll dena, .ems-table jaisa */
+    .table-container{
+        overflow-x: auto;
+    }
+
+    .table{
+        min-width: 600px;
+    }
+
+    .toast-container{
+        top: 80px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .toast,
+    .toast-container .toast{
+        min-width: 0;
+        width: 100%;
+    }
+
+    .pagination{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .modal{
+        padding: 18px;
+    }
+
+    .modal-title{
+        font-size: 18px;
+    }
 .cards-container{
 
 grid-template-columns:1fr;
@@ -69,4 +169,150 @@ display:none;
 
 }
 
+
+    .container-fluid{
+        padding-left:15px;
+        padding-right:15px;
+        padding-top:15px;
+        padding-bottom:15px;
+    }
+
+    .page-card{
+        padding:16px;
+        border-radius:14px;
+    }
+
+    /* Forms: 2 columns -> 1 column */
+    .form-grid,
+    .info-list{
+        grid-template-columns:1fr;
+    }
+
+    /* Filter bar: inputs full width */
+    .filter-bar{
+        flex-direction:column;
+    }
+
+    .filter-bar input,
+    .filter-bar select{
+        width:100%;
+        min-width:0;
+    }
+
+    /* Tables: horizontal scroll instead of squish/overflow */
+    .ems-table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+    .activity-box table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+    .page-card-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .photo-upload-box{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .profile-header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .form-actions{
+        flex-direction:column;
+    }
+
+    .form-actions .btn-ems{
+        width:100%;
+        justify-content:center;
+    }
+}
+
+
+
+
+/* ===========================================
+   AUTH PAGES - MOBILE
+=========================================== */
+
+
+    @media (max-width: 480px) {
+
+    .dashboard-card{
+        padding: 16px;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .dashboard-card i{
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+
+    .page-title h1{
+        font-size: 19px;
+    }
+
+    .action-dropdown{
+        width: 160px;
+    }
+
+   .auth-box {
+        padding: 30px 22px;
+        border-radius: 14px;
+    }
+
+    .auth-logo h2 {
+        font-size: 20px;
+    }
+
+    .auth-logo p {
+        font-size: 13px;
+    }
+
+    .auth-form .form-group input,
+    .auth-form .form-group select {
+        padding: 11px 13px;
+        font-size: 14px;
+    }
+
+    .btn-auth {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .auth-links {
+        font-size: 13px;
+    }
+    .auth-box {
+        padding: 30px 22px;
+        border-radius: 14px;
+    }
+
+    .auth-logo h2 {
+        font-size: 20px;
+    }
+
+    .auth-logo p {
+        font-size: 13px;
+    }
+
+}
+
+@media (max-height: 650px) {
+
+    body.auth-body {
+        align-items: flex-start;
+        padding-top: 30px;
+    }
 }

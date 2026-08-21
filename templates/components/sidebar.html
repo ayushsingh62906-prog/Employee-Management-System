@@ -7,13 +7,15 @@
 
     <!-- Logo -->
     <div class="logo">
-        <i class="fas fa-briefcase" style="color:var(--primary);"></i>
-        <span>EMS Pro</span>
-    </div>
+    <img src="{{ url_for('static', filename='images/logo.png') }}"
+         alt="WorkNest"
+         style="height: 32px; width: auto; object-fit: contain;">
+    <span>WorkNest</span>
+</div>
 
     <!-- User Info -->
     <div class="user-info">
-        <img src="{{ url_for('static', filename='uploads/profile_photos/' ~ session.photo) if session.get('photo') else url_for('static', filename='uploads/default-avatar.png') }}" 
+        <img src="{{ url_for('static', filename='uploads/profile_photos/' ~ session.photo) if session.get('photo') else url_for('static', filename='uploads/default-avatar.png') }}"
      class="user-image"
      onerror="this.src='https://ui-avatars.com/api/?name={{ session.username }}&background=6366F1&color=fff';"
      alt="User">
@@ -28,7 +30,7 @@
         {% if session.role == 'admin' %}
 
             <li>
-                <a href="{{ url_for('admin_dashboard') }}" 
+                <a href="{{ url_for('admin_dashboard') }}"
                    class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
@@ -51,123 +53,152 @@
                 </a>
             </li>
 
-           <li>
-    <a href="{{ url_for('attendance.list_attendance') }}"
-       class="{% if 'attendance.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-calendar-check"></i>
-        <span>Attendance</span>
-    </a>
-</li>
-
-           <li>
-    <a href="{{ url_for('leave.list_leave_requests') }}"
-       class="{% if 'leave.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-plane-departure"></i>
-        <span>Leave</span>
-    </a>
-</li>
-<li>
-    <a href="{{ url_for('onboarding.list_pending_onboarding') }}"
-       class="{% if 'onboarding.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-user-clock"></i>
-        <span>Pending Onboarding</span>
-    </a>
-</li>
+            <li>
+                <a href="{{ url_for('attendance.list_attendance') }}"
+                   class="{% if 'attendance.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
 
             <li>
-    <a href="{{ url_for('payroll.list_payroll') }}"
-       class="{% if 'payroll.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-money-check-alt"></i>
-        <span>Payroll</span>
-    </a>
-</li>
-<li>
-    <a href="{{ url_for('announcements.list_announcements') }}"
-       class="{% if 'announcements.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-bullhorn"></i>
-        <span>Announcements</span>
-    </a>
-</li>
+                <a href="{{ url_for('leave.list_leave_requests') }}"
+                   class="{% if 'leave.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-plane-departure"></i>
+                    <span>Leave</span>
+                    {% if nav_badges is defined and nav_badges.pending_leaves and nav_badges.pending_leaves > 0 %}
+                        <span class="nav-badge">{{ nav_badges.pending_leaves }}</span>
+                    {% endif %}
+                </a>
+            </li>
 
-<li>
-    <a href="{{ url_for('settings.change_password') }}"
-       class="{% if 'settings.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-    </a>
-</li>
+            <li>
+                <a href="{{ url_for('onboarding.list_pending_onboarding') }}"
+                   class="{% if 'onboarding.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-user-clock"></i>
+                    <span>Pending Onboarding</span>
+                    {% if nav_badges is defined and nav_badges.pending_onboarding and nav_badges.pending_onboarding > 0 %}
+                        <span class="nav-badge">{{ nav_badges.pending_onboarding }}</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('payroll.list_payroll') }}"
+                   class="{% if 'payroll.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-money-check-alt"></i>
+                    <span>Payroll</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('announcements.list_announcements') }}"
+                   class="{% if 'announcements.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Announcements</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('settings.update_profile') }}"
+                   class="{% if 'settings.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
 
         <!-- ==================== HR MENU ==================== -->
         {% elif session.role == 'hr' %}
 
             <li>
-                <a href="{{ url_for('hr_dashboard') }}">
+                <a href="{{ url_for('hr_dashboard') }}"
+                   class="{% if request.endpoint == 'hr_dashboard' %}active{% endif %}">
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
             <li>
-    <a href="{{ url_for('jobs.list_jobs') }}"
-       class="{% if 'jobs.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-briefcase"></i>
-        <span>Job Openings</span>
-    </a>
-</li>
-<li>
-    <a href="{{ url_for('exit.list_resignations') }}"
-       class="{% if 'exit.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-door-open"></i>
-        <span>Exit / Resignations</span>
-    </a>
-</li>
+                <a href="{{ url_for('jobs.list_jobs') }}"
+                   class="{% if 'jobs.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Job Openings</span>
+                    {% if nav_badges is defined and nav_badges.new_applications and nav_badges.new_applications > 0 %}
+                        <span class="nav-badge">{{ nav_badges.new_applications }}</span>
+                    {% endif %}
+                </a>
+            </li>
 
-            
+            <li>
+                <a href="{{ url_for('exit.list_resignations') }}"
+                   class="{% if 'exit.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-door-open"></i>
+                    <span>Exit / Resignations</span>
+                    {% if nav_badges is defined and nav_badges.pending_resignations and nav_badges.pending_resignations > 0 %}
+                        <span class="nav-badge">{{ nav_badges.pending_resignations }}</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('settings.update_profile') }}"
+                   class="{% if 'settings.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
 
         <!-- ==================== EMPLOYEE MENU ==================== -->
         {% elif session.role == 'employee' %}
 
             <li>
-                <a href="{{ url_for('employee_dashboard') }}">
+                <a href="{{ url_for('employee_dashboard') }}"
+                   class="{% if request.endpoint == 'employee_dashboard' %}active{% endif %}">
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
-            
-           <li>
-    <a href="{{ url_for('employee_attendance.attendance_home') }}"
-       class="{% if 'employee_attendance.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-calendar-check"></i>
-        <span>Attendance</span>
-    </a>
-</li>
+            <li>
+                <a href="{{ url_for('employee_attendance.attendance_home') }}"
+                   class="{% if 'employee_attendance.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
 
             <li>
-    <a href="{{ url_for('employee_leave.leave_home') }}"
-       class="{% if 'employee_leave.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-plane-departure"></i>
-        <span>Leave</span>
-    </a>
-</li>
+                <a href="{{ url_for('employee_leave.leave_home') }}"
+                   class="{% if 'employee_leave.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-plane-departure"></i>
+                    <span>Leave</span>
+                </a>
+            </li>
+
             <li>
                 <a href="{{ url_for('employee_payroll.list_payslips') }}"
-   class="{% if 'employee_payroll.' in request.endpoint %}active{% endif %}">
-    <i class="fas fa-money-check-alt"></i>
-    <span>Salary</span>
-</a>
+                   class="{% if 'employee_payroll.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-money-check-alt"></i>
+                    <span>Salary</span>
+                </a>
             </li>
+
             <li>
-    <a href="{{ url_for('employee_exit.exit_home') }}"
-       class="{% if 'employee_exit.' in request.endpoint %}active{% endif %}">
-        <i class="fas fa-door-open"></i>
-        <span>Resignation</span>
-    </a>
-</li>
+                <a href="{{ url_for('employee_exit.exit_home') }}"
+                   class="{% if 'employee_exit.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-door-open"></i>
+                    <span>Resignation</span>
+                </a>
+            </li>
 
-          
+            <li>
+                <a href="{{ url_for('settings.update_profile') }}"
+                   class="{% if 'settings.' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
 
-          
         {% endif %}
 
         <!-- Common Logout -->
